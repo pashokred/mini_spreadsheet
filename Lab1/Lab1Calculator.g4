@@ -1,4 +1,4 @@
-﻿grammar LabCalculator; 2
+﻿grammar Lab1Calculator; 
 
 
 /*
@@ -21,16 +21,17 @@ expression :
  * Lexer Rules 
  */
 
-NUMBER : INT ('.' INT)?;
+NUMBER : INT ('.'INT)?;
 IDENTIFIER : [a-zA-Z]+[1-9][0-9]+;
 
-INT : (&#39;0&#39;..&#39;9&#39;)+;
+INT : ('0'..'9')+;
 
-EXPONENT : &#39;^&#39;;
-MULTIPLY : &#39;*&#39;;
-DIVIDE : &#39;/&#39;;
-SUBTRACT : &#39;-&#39;;
-ADD : &#39;+&#39;;
-LPAREN : &#39;(&#39;;
-RPAREN : &#39;)&#39;;
-WS : [ \t\r\n] -&gt; channel(HIDDEN);
+EXPONENT : '^';
+MULTIPLY : '*';
+DIVIDE : '/';
+SUBTRACT : '-';
+ADD : '+';
+LPAREN : '(';
+RPAREN : ')';
+
+WS : [ \t\r\n] -> channel(HIDDEN);

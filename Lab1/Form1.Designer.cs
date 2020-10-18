@@ -53,7 +53,6 @@
             this.label1.Size = new System.Drawing.Size(188, 21);
             this.label1.TabIndex = 1;
             this.label1.Text = "Enter integer size of table:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // AddRow
             // 
@@ -91,7 +90,6 @@
             this.Table.Size = new System.Drawing.Size(1353, 527);
             this.Table.TabIndex = 3;
             this.Table.Text = "dataGridView2";
-            this.Table.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Table_CellContentClick);
             // 
             // TableRows
             // 

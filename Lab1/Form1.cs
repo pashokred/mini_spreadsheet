@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Lab1
@@ -24,22 +18,10 @@ namespace Lab1
 
         private void InitializeDataGridView(int rows, int columns)
         {
-            /*Table.AllowUserToAddRows = false;
-            Table.AllowUserToDeleteRows = false;
-            Table.AllowUserToResizeRows = false;*/
-            //Table.EnableHeadersVisualStyles = false;
-            //Table.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            //Table.EditMode = DataGridViewEditMode.EditOnKeystroke;
-            //Table.ShowEditingIcon = false;
+            
             Table.Name = "Table";
             Table.TabIndex = 0;
             Table.RowHeadersWidth = 55;
-            //used to attach event-handlers to the events of the editing control(nice name!)
-            //Table.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(MyTable_EditingControlShowing);
-            // not implemented here, but I still like the name DataGridViewEditingControlShowingEventHandler :o) LOL
-            /*Table.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            Table.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;*/
-
             //Initializing Table
 
             for (int i = 0; i < columns; i++)
@@ -65,6 +47,26 @@ namespace Lab1
             Table.RowHeadersDefaultCellStyle.Font = new Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Table.RowHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             Table.RowHeadersDefaultCellStyle.BackColor = Color.Gainsboro;
+
+
+
+            
+            //used to attach event-handlers to the events of the editing control(nice name!)
+            //Table.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(MyTable_EditingControlShowing);
+            // not implemented here, but I still like the name DataGridViewEditingControlShowingEventHandler :o) LOL
+            /*Table.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            Table.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;*/
+            
+            /*Table.AllowUserToAddRows = false;
+            Table.AllowUserToDeleteRows = false;
+            Table.AllowUserToResizeRows = false;*/
+            //Table.EnableHeadersVisualStyles = false;
+            //Table.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            //Table.EditMode = DataGridViewEditMode.EditOnKeystroke;
+            //Table.ShowEditingIcon = false;
+
+            
+
         }
         private void CreateTableBtn_Click(object sender, EventArgs e)
         {
@@ -115,7 +117,6 @@ namespace Lab1
             Table.Columns.Add(acolumn);
         }
 
-
         private void AddRow_Click(object sender, EventArgs e)
         {
             AddARow(Table.Rows.Count - 1);
@@ -136,23 +137,9 @@ namespace Lab1
             Table.Columns.RemoveAt(Table.Columns.Count - 1);
         }
 
-
-        private void Table_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void UpdateCellBtn_Click(object sender, EventArgs e)
         {
-            Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = CellEditText.Text;
-           
+            Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = Calculator.Evaluate(CellEditText.Text);
         }
     }
 }
