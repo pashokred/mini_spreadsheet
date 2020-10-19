@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Lab1
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         ///  The main entry point for the application.
@@ -17,14 +15,43 @@ namespace Lab1
         //Task:
 
         // +, -, *, / (binar operations)
+        //^ (put number in the power)
 
         // mod, div
-
-        //^ (put number in the power)
 
         // =, <, >
 
         // <=, >=, <>
+
+        public static string ComputeColumnName(int number)
+        {
+            string columnName = "";
+            if (number < 26)
+            {
+                return ((char)(number % 26 + 65)).ToString();
+            }
+            columnName += ((char)(number % 26 + 65)).ToString();
+            columnName += ComputeColumnName(number / 26 - 1);
+            return columnName;
+        }
+
+        public static string Reverse(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
+        public static Dictionary<string, double> FullFillDictionary(Dictionary<string, double> tableIdentifier)
+        {
+            for (int i = 0; i < 25; ++i)
+            {
+                tableIdentifier[Reverse(ComputeColumnName(i))] = i;
+            }
+
+            return tableIdentifier;
+        }
+
 
         [STAThread]
         static void Main()

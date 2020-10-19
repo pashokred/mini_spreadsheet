@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -82,31 +83,12 @@ namespace Lab1
             DataGridViewRow arow = new DataGridViewRow {HeaderCell = {Value = (i + 1).ToString()}};
             Table.Rows.Add(arow);
         }
-            
-        public static string Reverse(string s)
-        {
-            char[] charArray = s.ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
-        }
-
-        static string ComputeColumnName(int number)
-        {
-            string columnName = "";
-            if(number < 26)
-            {
-                return ((char)(number % 26 + 65)).ToString();
-            }
-            columnName += ((char)(number % 26 + 65)).ToString();
-            columnName += ComputeColumnName(number / 26 - 1);
-            return columnName;
-        }
 
         private void AddAColumn(int i)
         {
             DataGridViewTextBoxColumn acolumn = new DataGridViewTextBoxColumn();
-            acolumn.HeaderText = Reverse(ComputeColumnName(i));
-            acolumn.Name = "Column" + i.ToString();
+            acolumn.HeaderText = Program.Reverse(Program.ComputeColumnName(i));
+            acolumn.Name = "Column" + i;
             acolumn.Width = 60;
             acolumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             //make a Style template to be used in the grid
@@ -139,7 +121,11 @@ namespace Lab1
 
         private void UpdateCellBtn_Click(object sender, EventArgs e)
         {
-            Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = Calculator.Evaluate(CellEditText.Text);
+
+            var text = CellEditText.Text;
+
+            Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = Calculator.Evaluate(text);
         }
+
     }
 }

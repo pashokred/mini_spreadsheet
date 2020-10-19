@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using Lab1;
 using Lab1Calculator;
 
 namespace Lab1
@@ -7,13 +8,13 @@ namespace Lab1
     {
         public static double Evaluate(string expression)
         {
-            var lexer = new Lab1CalculatorLexer(new AntlrInputStream(expression));
+            var lexer = new Lab1Lexer(new AntlrInputStream(expression));
             lexer.RemoveErrorListeners();
             lexer.AddErrorListener(new ThrowExceptionErrorListener());
             var tokens = new CommonTokenStream(lexer);
-            var parser = new Lab1CalculatorParser(tokens);
+            var parser = new Lab1Parser(tokens);
             var tree = parser.compileUnit();
-            var visitor = new Lab1CalculatorVisitor();
+            var visitor = new Lab1Visitor();
             return visitor.Visit(tree);
         }
     }
