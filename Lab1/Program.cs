@@ -42,17 +42,6 @@ namespace Lab1
             return new string(charArray);
         }
 
-        public static Dictionary<string, double> FullFillDictionary(Dictionary<string, double> tableIdentifier)
-        {
-            for (int i = 0; i < 25; ++i)
-            {
-                tableIdentifier[Reverse(ComputeColumnName(i))] = i;
-            }
-
-            return tableIdentifier;
-        }
-
-
         [STAThread]
         static void Main()
         {

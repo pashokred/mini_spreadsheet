@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Drawing;
-using Lab1Calculator;
 
 
 namespace Lab1
 {
     class Lab1Visitor : Lab1BaseVisitor<double>
     {
-    //таблиця ідентифікаторів (тут для прикладу)
-    //в лабораторній роботі заміните на свою!!!!
-
-        Dictionary<string, double> tableIdentifier = new Dictionary<string, double>();
         public override double VisitCompileUnit(Lab1Parser.CompileUnitContext context)
         {
             return Visit(context.expression());
@@ -31,9 +26,8 @@ namespace Lab1
         {
             string result = context.GetText();
             double value;
-            tableIdentifier = Program.FullFillDictionary(tableIdentifier);
             //видобути значення змінної з таблиці
-            if (tableIdentifier.TryGetValue(result, out value))
+            if (Form1.TableIdentifier.TryGetValue(result, out value))
             {
                 return value;
             }
@@ -42,6 +36,25 @@ namespace Lab1
                 return 0.0;
             }
         }
+
+        /*private static (string, int) ParseIdentifier(string identifier)
+        {
+            (string, int) column_row = ("", 0);
+            string row = "";
+
+            for (int i = 0; identifier[i] >= 'A' && identifier[i] <= 'Z'; ++i)
+            {
+                column_row.Item1 += identifier[i].ToString();
+            }
+            for (int i = column_row.Item1.Length; identifier[i] >= '0' && identifier[i] <= '9'; ++i)
+            {
+                row += identifier[i].ToString();
+            }
+            column_row.Item2 = int.Parse(row);
+
+            return column_row;
+        }*/
+
 
         public override double VisitParenthesizedExpr(Lab1Parser.ParenthesizedExprContext context)
         {
@@ -76,65 +89,61 @@ namespace Lab1
         {
             var left = WalkLeft(context);
             var right = WalkRight(context);
-            if (context.operatorToken.Type == Lab1Lexer.MULTIPLY)
+            switch (context.operatorToken.Type)
             {
-                Debug.WriteLine(" {0} * {1} ", left, right);
-                return left * right;
-            }
-            else //Lab1Lexer.DIVIDE
-            {
-                Debug.WriteLine(" {0} / {1} ", left, right);
-                return left / right;
+                case Lab1Lexer.MULTIPLY:
+                    Debug.WriteLine(" {0} * {1} ", left, right);
+                    return left * right;
+                case Lab1Lexer.DIVIDE:
+                    Debug.WriteLine(" {0} / {1} ", left, right);
+                    return left / right;
+                case Lab1Lexer.DIV:
+                    Debug.WriteLine(" {0} div {1} ", left, right);
+                    return Convert.ToInt32(left) / Convert.ToInt32(right);
+                //if (context.operatorToken.Type == Lab1Lexer.MOD)
+                default:
+                    Debug.WriteLine(" {0} mod {1} ", left, right);
+                    return left % right;
             }
         }
 
-        public override double VisitComparisonExpr(Lab1Parser.ComparisonExprContext context)
+        public override double VisitRelationalExpr(Lab1Parser.RelationalExprContext context)
         {
             var left = WalkLeft(context);
             var right = WalkRight(context);
-            if (context.operatorToken.Type == Lab1Lexer.GT)
+            switch (context.operatorToken.Type)
             {
-                Debug.WriteLine(" {0} > {1} ", left, right);
-                return Convert.ToDouble(left > right);
+                case Lab1Lexer.GT:
+                    Debug.WriteLine(" {0} > {1} ", left, right);
+                    return Convert.ToDouble(left > right);
+                case Lab1Lexer.GE:
+                    Debug.WriteLine(" {0} >= {1} ", left, right);
+                    return Convert.ToDouble(left >= right);
+                case Lab1Lexer.LT:
+                    Debug.WriteLine(" {0} < {1} ", left, right);
+                    return Convert.ToDouble(left < right);
+                //if (context.operatorToken.Type == Lab1Lexer.LE)
+                default:
+                    Debug.WriteLine(" {0} <= {1} ", left, right);
+                    return Convert.ToDouble(left <= right);
             }
-            else if (context.operatorToken.Type == Lab1Lexer.GE)
-            {
-                Debug.WriteLine(" {0} >= {1} ", left, right);
-                return Convert.ToDouble(left >= right);
-            }
-            else if (context.operatorToken.Type == Lab1Lexer.LT)
-            {
-                Debug.WriteLine(" {0} < {1} ", left, right);
-                return Convert.ToDouble(left < right);
-            }
-            else if (context.operatorToken.Type == Lab1Lexer.LE)
-            {
-                Debug.WriteLine(" {0} <= {1} ", left, right);
-                return Convert.ToDouble(left <= right);
-            }
-            else //(context.operatorToken.Type == LabCalculatorLexer.EQ)
+        }
+
+        public override double VisitEqualityExpr(Lab1Parser.EqualityExprContext context)
+        {
+            var left = WalkLeft(context);
+            var right = WalkRight(context);
+            if (context.operatorToken.Type == Lab1Lexer.EQ)
             {
                 Debug.WriteLine(" {0} = {1} ", left, right);
                 return Convert.ToDouble(left == right);
             }
+            else //(context.operatorToken.Type == Lab1Lexer.NE)
+            {
+                Debug.WriteLine(" {0} <> {1} ", left, right);
+                return Convert.ToDouble(left != right);
+            }
         }
-
-        public override double VisitModExpr(Lab1Parser.ModExprContext context)
-        {
-            var left = WalkLeft(context);
-            var right = WalkRight(context);
-            Debug.WriteLine(" {0} mod {1} ", left, right);
-            return left % right;
-        }
-
-        public override double VisitDivExpr(Lab1Parser.DivExprContext context)
-        {
-            int left = Convert.ToInt32(WalkLeft(context));
-            int right = Convert.ToInt32(WalkRight(context));
-            Debug.WriteLine(" {0} div {1} ", left, right);
-            return left / right;
-        }
-
 
         private double WalkLeft(Lab1Parser.ExpressionContext context)
         {

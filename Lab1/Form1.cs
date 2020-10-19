@@ -119,13 +119,31 @@ namespace Lab1
             Table.Columns.RemoveAt(Table.Columns.Count - 1);
         }
 
+        public static Dictionary<string, double> TableIdentifier = new Dictionary<string, double>();
+
         private void UpdateCellBtn_Click(object sender, EventArgs e)
         {
+            try
+            {
+                var result = Calculator.Evaluate(CellEditText.Text);
 
-            var text = CellEditText.Text;
-
-            Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = Calculator.Evaluate(text);
+                Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = result;
+                TableIdentifier[
+                    Program.Reverse(Program.ComputeColumnName(Table.CurrentCell.ColumnIndex)) +
+                    (Table.CurrentCell.RowIndex + 1).ToString()] = result;
+            }
+            catch (ArgumentException argumentException)
+            {
+                var errorForm = new ErrorForm(argumentException.Message);
+                errorForm.ShowDialog();
+            }
+            
         }
 
+        private void InfoBtn_Click(object sender, EventArgs e)
+        {
+            var infoForm = new InfoForm();
+            infoForm.ShowDialog();
+        }
     }
 }

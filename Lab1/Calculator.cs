@@ -1,6 +1,4 @@
 ﻿using Antlr4.Runtime;
-using Lab1;
-using Lab1Calculator;
 
 namespace Lab1
 {

@@ -41,6 +41,7 @@
             this.UpdateCellBtn = new System.Windows.Forms.Button();
             this.DelRowBtn = new System.Windows.Forms.Button();
             this.DelColBtn = new System.Windows.Forms.Button();
+            this.InfoBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Table)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,22 +57,24 @@
             // 
             // AddRow
             // 
-            this.AddRow.Location = new System.Drawing.Point(1170, 12);
+            this.AddRow.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.AddRow.Location = new System.Drawing.Point(1169, 57);
             this.AddRow.Name = "AddRow";
             this.AddRow.Size = new System.Drawing.Size(94, 32);
             this.AddRow.TabIndex = 2;
             this.AddRow.Text = "Add Row";
-            this.AddRow.UseVisualStyleBackColor = true;
+            this.AddRow.UseVisualStyleBackColor = false;
             this.AddRow.Click += new System.EventHandler(this.AddRow_Click);
             // 
             // AddColumn
             // 
-            this.AddColumn.Location = new System.Drawing.Point(1280, 12);
+            this.AddColumn.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.AddColumn.Location = new System.Drawing.Point(1280, 56);
             this.AddColumn.Name = "AddColumn";
             this.AddColumn.Size = new System.Drawing.Size(94, 32);
             this.AddColumn.TabIndex = 2;
             this.AddColumn.Text = "Add Column";
-            this.AddColumn.UseVisualStyleBackColor = true;
+            this.AddColumn.UseVisualStyleBackColor = false;
             this.AddColumn.Click += new System.EventHandler(this.AddColumn_Click);
             // 
             // CellEditText
@@ -145,29 +148,44 @@
             // 
             // DelRowBtn
             // 
-            this.DelRowBtn.Location = new System.Drawing.Point(1170, 56);
+            this.DelRowBtn.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.DelRowBtn.Location = new System.Drawing.Point(1169, 12);
             this.DelRowBtn.Name = "DelRowBtn";
             this.DelRowBtn.Size = new System.Drawing.Size(94, 32);
             this.DelRowBtn.TabIndex = 2;
             this.DelRowBtn.Text = "Delete Row";
-            this.DelRowBtn.UseVisualStyleBackColor = true;
+            this.DelRowBtn.UseVisualStyleBackColor = false;
             this.DelRowBtn.Click += new System.EventHandler(this.DelRowBtn_Click);
             // 
             // DelColBtn
             // 
-            this.DelColBtn.Location = new System.Drawing.Point(1280, 56);
+            this.DelColBtn.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.DelColBtn.Location = new System.Drawing.Point(1280, 12);
             this.DelColBtn.Name = "DelColBtn";
             this.DelColBtn.Size = new System.Drawing.Size(94, 32);
             this.DelColBtn.TabIndex = 2;
             this.DelColBtn.Text = "Delete Column";
-            this.DelColBtn.UseVisualStyleBackColor = true;
+            this.DelColBtn.UseVisualStyleBackColor = false;
             this.DelColBtn.Click += new System.EventHandler(this.DelColBtn_Click);
+            // 
+            // InfoBtn
+            // 
+            this.InfoBtn.BackColor = System.Drawing.SystemColors.Info;
+            this.InfoBtn.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.InfoBtn.Location = new System.Drawing.Point(1015, 12);
+            this.InfoBtn.Name = "InfoBtn";
+            this.InfoBtn.Size = new System.Drawing.Size(127, 33);
+            this.InfoBtn.TabIndex = 9;
+            this.InfoBtn.Text = "Information";
+            this.InfoBtn.UseVisualStyleBackColor = false;
+            this.InfoBtn.Click += new System.EventHandler(this.InfoBtn_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1412, 638);
+            this.Controls.Add(this.InfoBtn);
             this.Controls.Add(this.UpdateCellBtn);
             this.Controls.Add(this.CreateTableBtn);
             this.Controls.Add(this.TableColumns);
@@ -204,6 +222,7 @@
         private System.Windows.Forms.Button UpdateCellBtn;
         private System.Windows.Forms.Button DelRowBtn;
         private System.Windows.Forms.Button DelColBtn;
+        private System.Windows.Forms.Button InfoBtn;
     }
 }
 
