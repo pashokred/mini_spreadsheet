@@ -25,7 +25,7 @@ expression :
  */
 
 NUMBER : INT ('.'INT)?;
-IDENTIFIER : [a-zA-Z]+[1-9][0-9]+;
+IDENTIFIER : [a-zA-Z]+[1-9] | [a-zA-Z]+[0-9]+;
 
 INT : ('0'..'9')+;
 

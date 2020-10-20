@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <Antlr4 Update="Lab1.g4">
-      <CustomToolNamespace>Lab1Calculator</CustomToolNamespace>
+      <CustomToolNamespace>Lab1</CustomToolNamespace>
     </Antlr4>
   </ItemGroup>
 

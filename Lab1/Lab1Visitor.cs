@@ -89,6 +89,7 @@ namespace Lab1
         {
             var left = WalkLeft(context);
             var right = WalkRight(context);
+
             switch (context.operatorToken.Type)
             {
                 case Lab1Lexer.MULTIPLY:

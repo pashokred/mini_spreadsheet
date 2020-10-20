@@ -42,6 +42,7 @@
             this.DelRowBtn = new System.Windows.Forms.Button();
             this.DelColBtn = new System.Windows.Forms.Button();
             this.InfoBtn = new System.Windows.Forms.Button();
+            this.ExportBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Table)).BeginInit();
             this.SuspendLayout();
             // 
@@ -180,11 +181,24 @@
             this.InfoBtn.UseVisualStyleBackColor = false;
             this.InfoBtn.Click += new System.EventHandler(this.InfoBtn_Click);
             // 
+            // ExportBtn
+            // 
+            this.ExportBtn.BackColor = System.Drawing.SystemColors.Control;
+            this.ExportBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ExportBtn.Location = new System.Drawing.Point(873, 50);
+            this.ExportBtn.Name = "ExportBtn";
+            this.ExportBtn.Size = new System.Drawing.Size(74, 31);
+            this.ExportBtn.TabIndex = 10;
+            this.ExportBtn.Text = "Export";
+            this.ExportBtn.UseVisualStyleBackColor = false;
+            this.ExportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1412, 638);
+            this.Controls.Add(this.ExportBtn);
             this.Controls.Add(this.InfoBtn);
             this.Controls.Add(this.UpdateCellBtn);
             this.Controls.Add(this.CreateTableBtn);
@@ -223,6 +237,7 @@
         private System.Windows.Forms.Button DelRowBtn;
         private System.Windows.Forms.Button DelColBtn;
         private System.Windows.Forms.Button InfoBtn;
+        private System.Windows.Forms.Button ExportBtn;
     }
 }
 

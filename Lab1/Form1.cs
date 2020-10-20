@@ -132,13 +132,52 @@ namespace Lab1
                     Program.Reverse(Program.ComputeColumnName(Table.CurrentCell.ColumnIndex)) +
                     (Table.CurrentCell.RowIndex + 1).ToString()] = result;
             }
-            catch (ArgumentException argumentException)
+            catch (Exception exception)
+            {
+                var errorForm = new ErrorForm(exception.Message);
+                errorForm.ShowDialog();
+            }
+
+            /*catch (ArgumentException argumentException)
             {
                 var errorForm = new ErrorForm(argumentException.Message);
                 errorForm.ShowDialog();
             }
+            catch (DivideByZeroException zeroDiv)
+            {
+                var errorForm = new ErrorForm(zeroDiv.Message);
+                errorForm.ShowDialog();
+            }*/
             
         }
+
+        private void ExportBtn_Click(object sender, EventArgs e)
+        {
+            /*
+            if (Table.Rows.Count > 0)
+            {
+
+                Microsoft.Office.Interop.Excel.Application xcelApp = new Microsoft.Office.Interop.Excel.Application();
+                xcelApp.Application.Workbooks.Add(Type.Missing);
+
+                for (int i = 1; i < Table.Columns.Count + 1; i++)
+                {
+                    xcelApp.Cells[1, i] = Table.Columns[i - 1].HeaderText;
+                }
+
+                for (int i = 0; i < Table.Rows.Count; i++)
+                {
+                    for (int j = 0; j < Table.Columns.Count; j++)
+                    {
+                        xcelApp.Cells[i + 2, j + 1] = Table.Rows[i].Cells[j].Value.ToString();
+                    }
+                }
+                xcelApp.Columns.AutoFit();
+                xcelApp.Visible = true;
+            }
+            */
+        }
+
 
         private void InfoBtn_Click(object sender, EventArgs e)
         {
