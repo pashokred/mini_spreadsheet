@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
-using System.Drawing;
-
 
 namespace Lab1
 {
@@ -25,16 +21,22 @@ namespace Lab1
         public override double VisitIdentifierExpr(Lab1Parser.IdentifierExprContext context)
         {
             string result = context.GetText();
-            double value;
             //видобути значення змінної з таблиці
-            if (Form1.TableIdentifier.TryGetValue(result, out value))
+
+            foreach (var (cell, value) in Form1.TableIdentifier)
             {
-                return value;
+                if (cell.position == result)
+                {
+                    if (Form1.IsCyclic(cell))
+                    {
+                        string message = "ERROR: Cycle found in cell " + Form1.CurrentCellColumnIndex +
+                                         (Form1.CurrentCellRowIndex + 1).ToString() + "that refers to cell " + result;
+                        throw new InvalidOperationException(message);
+                    }
+                    return value;
+                }
             }
-            else
-            {
-                return 0.0;
-            }
+            return 0.0;
         }
 
         /*private static (string, int) ParseIdentifier(string identifier)
@@ -66,7 +68,7 @@ namespace Lab1
             var left = WalkLeft(context);
             var right = WalkRight(context);
             Debug.WriteLine(" {0} ^ {1} ", left, right);
-            return System.Math.Pow(left, right);
+            return Math.Pow(left, right);
         }
 
         public override double VisitAdditiveExpr(Lab1Parser.AdditiveExprContext context)
@@ -78,11 +80,9 @@ namespace Lab1
                 Debug.WriteLine(" {0} + {1} ", left, right);
                 return left + right;
             }
-            else //LabCalculatorLexer.SUBTRACT
-            {
-                Debug.WriteLine(" {0} - {1} ", left, right);
-                return left - right;
-            }
+
+            Debug.WriteLine(" {0} - {1} ", left, right);
+            return left - right;
         }
 
         public override double VisitMultiplicativeExpr(Lab1Parser.MultiplicativeExprContext context)
@@ -139,11 +139,9 @@ namespace Lab1
                 Debug.WriteLine(" {0} = {1} ", left, right);
                 return Convert.ToDouble(left == right);
             }
-            else //(context.operatorToken.Type == Lab1Lexer.NE)
-            {
-                Debug.WriteLine(" {0} <> {1} ", left, right);
-                return Convert.ToDouble(left != right);
-            }
+
+            Debug.WriteLine(" {0} <> {1} ", left, right);
+            return Convert.ToDouble(left != right);
         }
 
         private double WalkLeft(Lab1Parser.ExpressionContext context)

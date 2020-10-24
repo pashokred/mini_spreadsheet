@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Lab1
 {
-    class Cell
+    public class Cell
     {
-
-
+        public string position;
+        public List<string> Dependencies;
     }
 }

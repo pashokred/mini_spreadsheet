@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Numerics;
 using System.Windows.Forms;
 
 namespace Lab1
@@ -15,6 +16,16 @@ namespace Lab1
         {
             InitializeDataGridView(15, 25);
             Controls.Add(Table);
+        }
+
+        public static int CurrentCellColumnIndex;
+        public static int CurrentCellRowIndex;
+
+        public static bool IsCyclic(Cell cell)
+        {
+            return cell.Dependencies.Exists(x =>
+                Program.PrintColumnName(CurrentCellColumnIndex) + (CurrentCellRowIndex + 1).ToString() ==
+                x);
         }
 
         private void InitializeDataGridView(int rows, int columns)
@@ -94,7 +105,7 @@ namespace Lab1
             //make a Style template to be used in the grid
             DataGridViewCell acell = new DataGridViewTextBoxCell();
             acell.Style.BackColor = Color.SeaShell;
-            acell.Style.SelectionBackColor = Color.Wheat;
+            acell.Style.SelectionBackColor = Color.FromArgb(196,207,255);
             acolumn.CellTemplate = acell;
             Table.Columns.Add(acolumn);
         }
@@ -119,18 +130,25 @@ namespace Lab1
             Table.Columns.RemoveAt(Table.Columns.Count - 1);
         }
 
-        public static Dictionary<string, double> TableIdentifier = new Dictionary<string, double>();
+        public static Dictionary<Cell, double> TableIdentifier = new Dictionary<Cell, double>();
+
+        public static Dictionary<string, List<string>> Dependencies = new Dictionary<string, List<string>>();
 
         private void UpdateCellBtn_Click(object sender, EventArgs e)
         {
             try
             {
+                CurrentCellColumnIndex = Table.CurrentCell.ColumnIndex;
+                CurrentCellRowIndex = Table.CurrentCell.RowIndex;
+
                 var result = Calculator.Evaluate(CellEditText.Text);
 
-                Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = result;
-                TableIdentifier[
-                    Program.Reverse(Program.ComputeColumnName(Table.CurrentCell.ColumnIndex)) +
-                    (Table.CurrentCell.RowIndex + 1).ToString()] = result;
+                Table.Rows[CurrentCellRowIndex].Cells[CurrentCellColumnIndex].Value = result;
+                TableIdentifier[new Cell{position = Program.PrintColumnName(CurrentCellColumnIndex) +
+                                                    (CurrentCellRowIndex + 1).ToString()}] = result;
+
+
+
             }
             catch (Exception exception)
             {

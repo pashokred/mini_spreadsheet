@@ -42,6 +42,12 @@ namespace Lab1
             return new string(charArray);
         }
 
+        public static string PrintColumnName(int number)
+        {
+           return Reverse(ComputeColumnName(number));
+        }
+
+
         [STAThread]
         static void Main()
         {
