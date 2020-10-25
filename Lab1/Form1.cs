@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
 using System.Windows.Forms;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Lab1
 {
@@ -18,14 +21,16 @@ namespace Lab1
             Controls.Add(Table);
         }
 
+
+        public static string CurrentCell;
+
         public static int CurrentCellColumnIndex;
         public static int CurrentCellRowIndex;
 
-        public static bool IsCyclic(Cell cell)
+        public static bool IsCyclic(string cell)
         {
-            return cell.Dependencies.Exists(x =>
-                Program.PrintColumnName(CurrentCellColumnIndex) + (CurrentCellRowIndex + 1).ToString() ==
-                x);
+            return Dependencies.TryGetValue(cell, out List<string> dependencies) &&
+                   dependencies.Exists(x => x == CurrentCell);
         }
 
         private void InitializeDataGridView(int rows, int columns)
@@ -99,7 +104,7 @@ namespace Lab1
         {
             DataGridViewTextBoxColumn acolumn = new DataGridViewTextBoxColumn();
             acolumn.HeaderText = Program.Reverse(Program.ComputeColumnName(i));
-            acolumn.Name = "Column" + i;
+            acolumn.Name = acolumn.HeaderText;
             acolumn.Width = 60;
             acolumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             //make a Style template to be used in the grid
@@ -130,30 +135,56 @@ namespace Lab1
             Table.Columns.RemoveAt(Table.Columns.Count - 1);
         }
 
-        public static Dictionary<Cell, double> TableIdentifier = new Dictionary<Cell, double>();
+        public static Dictionary<string, double> TableIdentifier = new Dictionary<string, double>();
 
+        public static (string, string) TempDependency;
         public static Dictionary<string, List<string>> Dependencies = new Dictionary<string, List<string>>();
+
+        public static Dictionary<string, string> expressions = new Dictionary<string, string>();
 
         private void UpdateCellBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                CurrentCellColumnIndex = Table.CurrentCell.ColumnIndex;
-                CurrentCellRowIndex = Table.CurrentCell.RowIndex;
+                CurrentCell = Program.PrintColumnName(Table.CurrentCell.ColumnIndex) + (Table.CurrentCell.RowIndex + 1).ToString();
 
                 var result = Calculator.Evaluate(CellEditText.Text);
+                expressions[CurrentCell] = CellEditText.Text;
 
-                Table.Rows[CurrentCellRowIndex].Cells[CurrentCellColumnIndex].Value = result;
-                TableIdentifier[new Cell{position = Program.PrintColumnName(CurrentCellColumnIndex) +
-                                                    (CurrentCellRowIndex + 1).ToString()}] = result;
+                Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = result;
+                TableIdentifier[CurrentCell] = result;
 
+                if (Dependencies.TryGetValue(CurrentCell, out List<string> dependenciesList))
+                {
+                    foreach (string dependency in dependenciesList)
+                    {
+                        var depResult = Calculator.Evaluate(expressions[dependency]);
 
+                        (string Column, int Row) = Program.ParseIdentifier(dependency);
+                        Table.Rows[Row-1].Cells[Table.Columns[Column].Index].Value = depResult;
+                        TableIdentifier[dependency] = depResult;
+                    }
+                }
 
+                if (!string.IsNullOrEmpty(TempDependency.Item1) && !string.IsNullOrEmpty(TempDependency.Item2))
+                {
+                    if (Dependencies.ContainsKey(TempDependency.Item2))
+                    {
+                        Dependencies[TempDependency.Item1].Add(CurrentCell);
+                    }
+                    else
+                    {
+                        Dependencies.Add(TempDependency.Item2, new List<string> { CurrentCell });
+                    }
+                }
+                
             }
             catch (Exception exception)
             {
-                var errorForm = new ErrorForm(exception.Message);
+                int line = (new StackTrace(exception, true)).GetFrame(0).GetFileLineNumber();
+                var errorForm = new ErrorForm(exception.Message + ". Thrown at line " + line);
                 errorForm.ShowDialog();
+                
             }
 
             /*catch (ArgumentException argumentException)

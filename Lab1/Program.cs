@@ -48,6 +48,31 @@ namespace Lab1
         }
 
 
+        public static (string, int) ParseIdentifier(string identifier)
+        {
+            (string, int) columnRow = ("", 0);
+            string row = "";
+
+            for (int i = 0; i < identifier.Length; ++i)
+            {
+                if (identifier[i] >= 'A' && identifier[i] <= 'Z')
+                {
+                    columnRow.Item1 += identifier[i].ToString();
+                }
+            }
+            for (int i = columnRow.Item1.Length; i < identifier.Length; ++i)
+            {
+                if (identifier[i] >= '0' && identifier[i] <= '9')
+                {
+                    row += identifier[i].ToString();
+                }
+            }
+            columnRow.Item2 = int.Parse(row);
+
+            return columnRow;
+        }
+
+
         [STAThread]
         static void Main()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Lab1
@@ -23,7 +24,20 @@ namespace Lab1
             string result = context.GetText();
             //видобути значення змінної з таблиці
 
-            foreach (var (cell, value) in Form1.TableIdentifier)
+            if (Form1.TableIdentifier.TryGetValue(result, out double value))
+            {
+                if (Form1.IsCyclic(result))
+                {
+                    string message = "ERROR: Cycle found in cell " + Form1.CurrentCell + "that refers to cell " + result;
+                    throw new InvalidOperationException(message);
+                }
+
+                Form1.TempDependency = (Form1.CurrentCell, result);
+                return value;
+            }
+            return 0.0;
+
+            /*foreach (var (cell, value) in Form1.TableIdentifier)
             {
                 if (cell.position == result)
                 {
@@ -33,29 +47,17 @@ namespace Lab1
                                          (Form1.CurrentCellRowIndex + 1).ToString() + "that refers to cell " + result;
                         throw new InvalidOperationException(message);
                     }
+
+                    Form1.Dependencies[Form1.CurrentCellColumnIndex + (Form1.CurrentCellRowIndex + 1).ToString()].Add();
+
+
                     return value;
                 }
             }
-            return 0.0;
+            return 0.0;*/
         }
 
-        /*private static (string, int) ParseIdentifier(string identifier)
-        {
-            (string, int) column_row = ("", 0);
-            string row = "";
-
-            for (int i = 0; identifier[i] >= 'A' && identifier[i] <= 'Z'; ++i)
-            {
-                column_row.Item1 += identifier[i].ToString();
-            }
-            for (int i = column_row.Item1.Length; identifier[i] >= '0' && identifier[i] <= '9'; ++i)
-            {
-                row += identifier[i].ToString();
-            }
-            column_row.Item2 = int.Parse(row);
-
-            return column_row;
-        }*/
+        
 
 
         public override double VisitParenthesizedExpr(Lab1Parser.ParenthesizedExprContext context)

@@ -7,6 +7,12 @@ namespace Lab1
     public class Cell
     {
         public string position;
-        public List<string> Dependencies;
+        public List<string> Dependencies = new List<string>();
+
+        public void AddDependency(string dependency)
+        {
+            Dependencies.Add(dependency);
+        }
+
     }
 }
