@@ -22,15 +22,11 @@ namespace Lab1
         }
 
 
-        public static string CurrentCell;
+        public static Cell CurrentCell;
 
-        public static int CurrentCellColumnIndex;
-        public static int CurrentCellRowIndex;
-
-        public static bool IsCyclic(string cell)
+        public static bool IsCyclic(Cell cell)
         {
-            return Dependencies.TryGetValue(cell, out List<string> dependencies) &&
-                   dependencies.Exists(x => x == CurrentCell);
+            return cell.Dependencies.Exists(x => x == CurrentCell);
         }
 
         private void InitializeDataGridView(int rows, int columns)
@@ -64,26 +60,6 @@ namespace Lab1
             Table.RowHeadersDefaultCellStyle.Font = new Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Table.RowHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             Table.RowHeadersDefaultCellStyle.BackColor = Color.Gainsboro;
-
-
-
-            
-            //used to attach event-handlers to the events of the editing control(nice name!)
-            //Table.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(MyTable_EditingControlShowing);
-            // not implemented here, but I still like the name DataGridViewEditingControlShowingEventHandler :o) LOL
-            /*Table.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            Table.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;*/
-            
-            /*Table.AllowUserToAddRows = false;
-            Table.AllowUserToDeleteRows = false;
-            Table.AllowUserToResizeRows = false;*/
-            //Table.EnableHeadersVisualStyles = false;
-            //Table.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            //Table.EditMode = DataGridViewEditMode.EditOnKeystroke;
-            //Table.ShowEditingIcon = false;
-
-            
-
         }
         private void CreateTableBtn_Click(object sender, EventArgs e)
         {
@@ -135,49 +111,84 @@ namespace Lab1
             Table.Columns.RemoveAt(Table.Columns.Count - 1);
         }
 
-        public static Dictionary<string, double> TableIdentifier = new Dictionary<string, double>();
+        public static Dictionary<Cell, double> TableIdentifier = new Dictionary<Cell, double>(new CellEqualityComparer());
 
         public static (string, string) TempDependency;
-        public static Dictionary<string, List<string>> Dependencies = new Dictionary<string, List<string>>();
+        //public static Dictionary<string, List<string>> Dependencies = new Dictionary<string, List<string>>();
 
-        public static Dictionary<string, string> expressions = new Dictionary<string, string>();
+        //public static Dictionary<string, string> expressions = new Dictionary<string, string>();
 
         private void UpdateCellBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                CurrentCell = Program.PrintColumnName(Table.CurrentCell.ColumnIndex) + (Table.CurrentCell.RowIndex + 1).ToString();
+                if (TableIdentifier.ContainsKey(new Cell(Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
+                                                         (Table.CurrentCell.RowIndex + 1))))
+                {
+                    CurrentCell = TableIdentifier.FirstOrDefault(x =>
+                        x.Key.position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
+                        (Table.CurrentCell.RowIndex + 1).ToString()).Key;
+                    CurrentCell.Dependencies = TableIdentifier.FirstOrDefault(x =>
+                        x.Key.position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
+                        (Table.CurrentCell.RowIndex + 1).ToString()).Key.Dependencies;
+                    CurrentCell.expression = TableIdentifier.FirstOrDefault(x =>
+                        x.Key.position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
+                        (Table.CurrentCell.RowIndex + 1).ToString()).Key.expression;
 
+                }
+                else
+                {
+                    CurrentCell = new Cell(Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
+                                                         (Table.CurrentCell.RowIndex + 1));
+                }
+
+                
+                // Evaluate expression
                 var result = Calculator.Evaluate(CellEditText.Text);
-                expressions[CurrentCell] = CellEditText.Text;
 
+                // Update current cell
                 Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = result;
+
+                //Add current cell to table identifier
                 TableIdentifier[CurrentCell] = result;
 
-                if (Dependencies.TryGetValue(CurrentCell, out List<string> dependenciesList))
-                {
-                    foreach (string dependency in dependenciesList)
-                    {
-                        var depResult = Calculator.Evaluate(expressions[dependency]);
+                //Add expression to variable in cell
+                CurrentCell.expression = CellEditText.Text;
 
-                        (string Column, int Row) = Program.ParseIdentifier(dependency);
-                        Table.Rows[Row-1].Cells[Table.Columns[Column].Index].Value = depResult;
-                        TableIdentifier[dependency] = depResult;
-                    }
-                }
+                //expressions[new Cell()] = CellEditText.Text;
+                //TableIdentifier[CurrentCell] = result;
 
-                if (!string.IsNullOrEmpty(TempDependency.Item1) && !string.IsNullOrEmpty(TempDependency.Item2))
-                {
-                    if (Dependencies.ContainsKey(TempDependency.Item2))
-                    {
-                        Dependencies[TempDependency.Item1].Add(CurrentCell);
-                    }
-                    else
-                    {
-                        Dependencies.Add(TempDependency.Item2, new List<string> { CurrentCell });
-                    }
-                }
                 
+                // Update dependent cells
+
+                if (CurrentCell.Dependencies.Count > 0)
+                {
+                    foreach (Cell Dependency in CurrentCell.Dependencies)
+                    {
+                        var depResult = Calculator.Evaluate(Dependency.expression);
+
+                        (string Column, int Row) = Program.ParseIdentifier(Dependency.position);
+                        Table.Rows[Row-1].Cells[Table.Columns[Column].Index].Value = depResult;
+                        TableIdentifier[Dependency] = depResult;
+                    }
+                }
+
+
+                // Check if temporary dependency not null and update dependencies
+
+                if (CurrentCell.temporaryDependencies.Count > 0)
+                {
+                    foreach (Cell dependency in CurrentCell.temporaryDependencies)
+                    {
+                        (Cell temp, double value) = (dependency, TableIdentifier[dependency]);
+                        temp.Dependencies = dependency.Dependencies;
+                        temp.expression = dependency.expression;
+                        temp.Dependencies.Add(CurrentCell);
+                        TableIdentifier.Remove(dependency);
+                        TableIdentifier.Add(temp, value);
+                    }
+                }
+
             }
             catch (Exception exception)
             {

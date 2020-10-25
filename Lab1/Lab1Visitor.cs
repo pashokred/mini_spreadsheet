@@ -24,16 +24,18 @@ namespace Lab1
             string result = context.GetText();
             //видобути значення змінної з таблиці
 
-            if (Form1.TableIdentifier.TryGetValue(result, out double value))
+            Cell resCell = new Cell(result);
+
+            if (Form1.TableIdentifier.ContainsKey(resCell))
             {
-                if (Form1.IsCyclic(result))
+                if (Form1.IsCyclic(resCell))
                 {
-                    string message = "ERROR: Cycle found in cell " + Form1.CurrentCell + "that refers to cell " + result;
+                    string message = "ERROR: Cycle found in cell " + Form1.CurrentCell.position + " that refers to cell " + result;
                     throw new InvalidOperationException(message);
                 }
 
-                Form1.TempDependency = (Form1.CurrentCell, result);
-                return value;
+                Form1.CurrentCell.temporaryDependencies.Add(resCell);
+                return Form1.TableIdentifier[resCell];
             }
             return 0.0;
 

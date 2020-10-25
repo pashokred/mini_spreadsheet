@@ -6,13 +6,32 @@ namespace Lab1
 {
     public class Cell
     {
-        public string position;
-        public List<string> Dependencies = new List<string>();
-
-        public void AddDependency(string dependency)
+        public Cell(string position)
         {
-            Dependencies.Add(dependency);
+            this.position = position;
         }
 
+        public string position { get; set; }
+        public List<Cell> Dependencies = new List<Cell>();
+        public List<Cell> temporaryDependencies = new List<Cell>();
+        public string expression { get; set; }
     }
+    
+    public class CellEqualityComparer : IEqualityComparer<Cell>
+    {
+        #region IEqualityComparer<Cell> cells
+
+        public bool Equals(Cell cell1, Cell cell2)
+        {
+            return cell1.position == cell2.position;
+        }
+
+        public int GetHashCode(Cell cell)
+        {
+            return cell.position.GetHashCode();
+        }
+
+        #endregion
+    }
+    
 }

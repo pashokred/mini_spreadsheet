@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Lab1Calculator.g4">
+    <None Update="Lab1.g4">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
