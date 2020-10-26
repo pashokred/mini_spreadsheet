@@ -5,6 +5,12 @@
 
 This is pretty spreadsheet created in Windows Forms that can help you make basic operations with cells and values. 
 
+### Used:
+
+* ANTLR4 for parsing expressions
+* Windows Forms for GUI
+
+
 ## Screenshot of operation
 
 ![Table Screenshot](https://github.com/pashokred/mini_spreadsheet/blob/master/img/TableScreenshot.png)
