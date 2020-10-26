@@ -5,8 +5,14 @@
 
 This is pretty spreadsheet created in Windows Forms that can help you make basic operations with cells and values. 
 
-A brief description of your project, what it is used for and how does life get
-awesome when someone starts to use it.
+![Table Screenshot](https://github.com/pashokred/mini_spreadsheet/blob/master/img/TableScreenshot.png)
+
+![Use-case diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/UseCaseDiagram.png)
+
+![Class diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/ClassDiagram.png)
+
+![Sequence diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/SequenceDiagram.png)
+
 
 ## Developing
 
