@@ -61,8 +61,6 @@ There is all the bells and whistles this project can perform:
 
 ## Configuration
 
-Here you should write what are all of the configurations a user can enter when
-using the project.
 
 #### Argument 1 
 
@@ -114,10 +112,6 @@ If you'd like to contribute, please fork the repository and use a feature
 branch. Pull requests are warmly welcome!
 
 ## Links
-
-Even though this information can be found inside the project on machine-readable
-format like in a .json file, it's good to include a summary of most useful
-links to humans using your project. You can include links like:
 
 - Repository: https://github.com/pashokred/mini_spreadsheet
 - Issue tracker: https://github.com/pashokred/mini_spreadsheet/issues
