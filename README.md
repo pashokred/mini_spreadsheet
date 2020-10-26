@@ -5,11 +5,19 @@
 
 This is pretty spreadsheet created in Windows Forms that can help you make basic operations with cells and values. 
 
+Screenshot of operation
+
 ![Table Screenshot](https://github.com/pashokred/mini_spreadsheet/blob/master/img/TableScreenshot.png)
+
+Use-case diagram:
 
 ![Use-case diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/UseCaseDiagram.png)
 
+Class diagram:
+
 ![Class diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/ClassDiagram.png)
+
+Sequence diagram:
 
 ![Sequence diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/SequenceDiagram.png)
 
@@ -88,17 +96,14 @@ Return: `Double`
 Default: `0`
 
 A2 = `45`;
-H4 = `7`;
 F3 = `26`;
-G3 = F3;
 B1 = `45`;
 E5 = `16`;
 
+
 Example:
 ```bash
-
-(A2+45) / F3 mod E5 - 50 mod B1 # Prints -1.5384...
-
+(A2+45) / F3 mod E5 - 50 mod B1  # Prints -1.5384...
 ```
 
 
