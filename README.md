@@ -5,23 +5,6 @@
 
 This is pretty spreadsheet created in Windows Forms that can help you make basic operations with cells and values. 
 
-## Screenshot of operation
-
-![Table Screenshot](https://github.com/pashokred/mini_spreadsheet/blob/master/img/TableScreenshot.png)
-
-## Use-case diagram:
-
-![Use-case diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/UseCaseDiagram.png)
-
-## Class diagram:
-
-![Class diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/ClassDiagram.png)
-
-## Sequence diagram:
-
-![Sequence diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/SequenceDiagram.png)
-
-
 ## Developing
 
 
@@ -126,3 +109,21 @@ branch. Pull requests are warmly welcome!
 "The code in this project is licensed under MIT license."
 
 Haha, sorry, not today
+
+
+## Screenshot of operation
+
+![Table Screenshot](https://github.com/pashokred/mini_spreadsheet/blob/master/img/TableScreenshot.png)
+
+## Use-case diagram:
+
+![Use-case diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/UseCaseDiagram.png)
+
+## Class diagram:
+
+![Class diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/ClassDiagram.png)
+
+## Sequence diagram:
+
+![Sequence diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/SequenceDiagram.png)
+
