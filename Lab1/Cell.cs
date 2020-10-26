@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Lab1
 {
@@ -13,8 +11,8 @@ namespace Lab1
 
         public string position { get; set; }
         public List<Cell> Dependencies = new List<Cell>();
-        public List<Cell> temporaryDependencies = new List<Cell>();
-        public string expression { get; set; }
+        public List<Cell> TemporaryDependencies = new List<Cell>();
+        public string Expression { get; set; }
     }
     
     public class CellEqualityComparer : IEqualityComparer<Cell>

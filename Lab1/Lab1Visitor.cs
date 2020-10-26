@@ -34,7 +34,7 @@ namespace Lab1
                     throw new InvalidOperationException(message);
                 }
 
-                Form1.CurrentCell.temporaryDependencies.Add(resCell);
+                Form1.CurrentCell.TemporaryDependencies.Add(resCell);
                 return Form1.TableIdentifier[resCell];
             }
             return 0.0;

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Numerics;
+using System.IO;
 using System.Windows.Forms;
 using System.Linq;
-using System.Linq.Expressions;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Data.OleDb;
 
 namespace Lab1
 {
@@ -51,13 +53,13 @@ namespace Lab1
 
             //Column header style
 
-            Table.ColumnHeadersDefaultCellStyle.Font = new Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Table.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Table.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             Table.ColumnHeadersDefaultCellStyle.BackColor = Color.Gainsboro;
 
             //Row header style
 
-            Table.RowHeadersDefaultCellStyle.Font = new Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Table.RowHeadersDefaultCellStyle.Font = new System.Drawing.Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Table.RowHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             Table.RowHeadersDefaultCellStyle.BackColor = Color.Gainsboro;
         }
@@ -131,9 +133,9 @@ namespace Lab1
                     CurrentCell.Dependencies = TableIdentifier.FirstOrDefault(x =>
                         x.Key.position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
                         (Table.CurrentCell.RowIndex + 1).ToString()).Key.Dependencies;
-                    CurrentCell.expression = TableIdentifier.FirstOrDefault(x =>
+                    CurrentCell.Expression = TableIdentifier.FirstOrDefault(x =>
                         x.Key.position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
-                        (Table.CurrentCell.RowIndex + 1).ToString()).Key.expression;
+                        (Table.CurrentCell.RowIndex + 1).ToString()).Key.Expression;
 
                 }
                 else
@@ -153,7 +155,10 @@ namespace Lab1
                 TableIdentifier[CurrentCell] = result;
 
                 //Add expression to variable in cell
-                CurrentCell.expression = CellEditText.Text;
+                if (string.IsNullOrEmpty(CurrentCell.Expression))
+                {
+                    CurrentCell.Expression = CellEditText.Text;
+                }
 
                 //expressions[new Cell()] = CellEditText.Text;
                 //TableIdentifier[CurrentCell] = result;
@@ -163,26 +168,26 @@ namespace Lab1
 
                 if (CurrentCell.Dependencies.Count > 0)
                 {
-                    foreach (Cell Dependency in CurrentCell.Dependencies)
+                    foreach (Cell dependency in CurrentCell.Dependencies)
                     {
-                        var depResult = Calculator.Evaluate(Dependency.expression);
+                        var depResult = Calculator.Evaluate(dependency.Expression);
 
-                        (string Column, int Row) = Program.ParseIdentifier(Dependency.position);
-                        Table.Rows[Row-1].Cells[Table.Columns[Column].Index].Value = depResult;
-                        TableIdentifier[Dependency] = depResult;
+                        (string column, int row) = Program.ParseIdentifier(dependency.position);
+                        Table.Rows[row-1].Cells[Table.Columns[column].Index].Value = depResult;
+                        TableIdentifier[dependency] = depResult;
                     }
                 }
 
 
                 // Check if temporary dependency not null and update dependencies
 
-                if (CurrentCell.temporaryDependencies.Count > 0)
+                if (CurrentCell.TemporaryDependencies.Count > 0)
                 {
-                    foreach (Cell dependency in CurrentCell.temporaryDependencies)
+                    foreach (Cell dependency in CurrentCell.TemporaryDependencies)
                     {
                         (Cell temp, double value) = (dependency, TableIdentifier[dependency]);
                         temp.Dependencies = dependency.Dependencies;
-                        temp.expression = dependency.expression;
+                        temp.Expression = dependency.Expression;
                         temp.Dependencies.Add(CurrentCell);
                         TableIdentifier.Remove(dependency);
                         TableIdentifier.Add(temp, value);
@@ -192,7 +197,7 @@ namespace Lab1
             }
             catch (Exception exception)
             {
-                int line = (new StackTrace(exception, true)).GetFrame(0).GetFileLineNumber();
+                int line = new StackTrace(exception, true).GetFrame(0).GetFileLineNumber();
                 var errorForm = new ErrorForm(exception.Message + ". Thrown at line " + line);
                 errorForm.ShowDialog();
                 
@@ -213,29 +218,126 @@ namespace Lab1
 
         private void ExportBtn_Click(object sender, EventArgs e)
         {
-            /*
             if (Table.Rows.Count > 0)
             {
-
-                Microsoft.Office.Interop.Excel.Application xcelApp = new Microsoft.Office.Interop.Excel.Application();
-                xcelApp.Application.Workbooks.Add(Type.Missing);
-
-                for (int i = 1; i < Table.Columns.Count + 1; i++)
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Excel (.xlsx)|  *.xlsx";
+                sfd.FileName = "Output.xlsx";
+                bool fileError = false;
+                if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    xcelApp.Cells[1, i] = Table.Columns[i - 1].HeaderText;
-                }
-
-                for (int i = 0; i < Table.Rows.Count; i++)
-                {
-                    for (int j = 0; j < Table.Columns.Count; j++)
+                    if (File.Exists(sfd.FileName))
                     {
-                        xcelApp.Cells[i + 2, j + 1] = Table.Rows[i].Cells[j].Value.ToString();
+                        try
+                        {
+                            File.Delete(sfd.FileName);
+                        }
+                        catch (IOException ex)
+                        {
+                            fileError = true;
+                            MessageBox.Show("It wasn't possible to write the data to the disk." + ex.Message);
+                        }
+                    }
+                    if (!fileError)
+                    {
+                        try
+                        {
+                            Excel.Application XcelApp = new Excel.Application();
+                            Excel._Workbook workbook = XcelApp.Workbooks.Add(Type.Missing);
+                            Excel._Worksheet worksheet = null;
+
+                            //worksheet = (Excel._Worksheet) workbook.Sheets["Sheet1"];
+                            worksheet = (Excel._Worksheet) workbook.ActiveSheet;
+                            worksheet.Name = "Output";
+                            worksheet.Application.ActiveWindow.SplitRow = 1;
+                            worksheet.Application.ActiveWindow.FreezePanes = true;
+
+
+                            for (int i = 0; i < Table.Rows.Count; i++)
+                            {
+                                for (int j = 0; j < Table.Columns.Count; j++)
+                                {
+                                    if (Table.Rows[i].Cells[j].Value != null)
+                                    {
+                                        worksheet.Cells[i + 1, j + 1] = Table.Rows[i].Cells[j].Value.ToString();
+                                    }
+                                }
+                            }
+
+                            worksheet.Columns.AutoFit();
+                            workbook.SaveAs(sfd.FileName);
+                            XcelApp.Quit();
+
+                            ReleaseObject(worksheet);
+                            ReleaseObject(workbook);
+                            ReleaseObject(XcelApp);
+
+                            MessageBox.Show("Data Exported Successfully !!!", "Info");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error :" + ex.Message);
+                        }
                     }
                 }
-                xcelApp.Columns.AutoFit();
-                xcelApp.Visible = true;
             }
-            */
+            else
+            {
+                MessageBox.Show("No Record To Export !!!", "Info");
+            }
+        }
+
+        private void ImportBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (OpenFileDialog ofd = new OpenFileDialog()
+                    {Filter = "*.xls|*.xlsx|Excel WorkBook|Excel WorkBook 97-2003", ValidateNames = true})
+                {
+                    if (ofd.ShowDialog() == DialogResult.OK)
+                    {
+                        String name = "Sheet1";
+                        String constr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" +
+                                        ofd.FileName +
+                                        ";Extended Properties='Excel 12.0;HDR=YES;';";
+
+                        OleDbConnection con = new OleDbConnection(constr);
+                        OleDbCommand oconn = new OleDbCommand("Select * From [" + name + "$]", con);
+                        con.Open();
+
+                        OleDbDataAdapter sda = new OleDbDataAdapter(oconn);
+                        System.Data.DataTable data = new System.Data.DataTable();
+                        sda.Fill(data);
+                        Table.DataSource = data;
+                        InitializeDataGridView(Table.RowCount, Table.ColumnCount);
+                        Controls.Add(Table);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string errormsg = ex.ToString();
+            }
+        }
+
+    
+
+        private void ReleaseObject(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Exception Occured while releasing object " + ex.Message, "Error");
+            }
+            finally
+            {
+                GC.Collect();
+            }
         }
 
 
