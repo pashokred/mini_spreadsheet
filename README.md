@@ -118,7 +118,7 @@ branch. Pull requests are warmly welcome!
 
 "The code in this project is licensed under MIT license."
 
-Haha, sorry, not today
+Sorry, not today
 
 
 ## Use-case diagram:
