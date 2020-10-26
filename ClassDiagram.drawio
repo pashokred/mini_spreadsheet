@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-10-26T00:30:10.859Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" etag="RMmjUz9aI_bsIcgZpHaw" version="13.8.0" type="github">
+<mxfile host="app.diagrams.net" modified="2020-10-26T01:48:37.951Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36" etag="gKS89e8QIu2SY-3kLe5x" version="13.8.0" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="1590" dy="774" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -19,8 +19,8 @@
         <mxCell id="EiC5z9EAIgZ3hvvaGwU--4" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;Calculator&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;span&gt;+ Evaluate(string) : double&lt;/span&gt;&lt;/p&gt;&lt;div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="70" y="545" width="260" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="EiC5z9EAIgZ3hvvaGwU--6" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;Lab1Visitor&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ field: Type&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ VisitCompileUnit(Lab1Parser.CompileInitContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitNumberExpr(Lab1Parser.NumberExprContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitIdentifierExpr(Lab1Parser.IdentifierExprContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitParenthesizedExpr(Lab1Parser.ParenthesizedExprContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitExponentialExpr(Lab1Parser.ExponentialExprContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitMultiplicativeExpr(Lab1Parser.MultiplicativeExprContext) : double&lt;/p&gt;&amp;nbsp;+ VisitRelationalExpr(Lab1Parser.RelationalExprContext) : double&lt;br class=&quot;Apple-interchange-newline&quot;&gt;&amp;nbsp;+ VisitAdditiveExpr(Lab1Parser.AdditiveExprContext) : double&lt;br&gt;&amp;nbsp;+ VisitEqualityExpr(Lab1Parser.EqualityExprContext) : double&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="20" y="790" width="420" height="320" as="geometry" />
+        <mxCell id="EiC5z9EAIgZ3hvvaGwU--6" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center&quot;&gt;&lt;b&gt;Lab1Visitor&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px ; margin-left: 4px&quot;&gt;+ VisitCompileUnit(Lab1Parser.CompileInitContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitNumberExpr(Lab1Parser.NumberExprContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitIdentifierExpr(Lab1Parser.IdentifierExprContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitParenthesizedExpr(Lab1Parser.ParenthesizedExprContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitExponentialExpr(Lab1Parser.ExponentialExprContext) : double&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px&quot;&gt;+ VisitMultiplicativeExpr(Lab1Parser.MultiplicativeExprContext) : double&lt;/p&gt;&amp;nbsp;+ VisitRelationalExpr(Lab1Parser.RelationalExprContext) : double&lt;br class=&quot;Apple-interchange-newline&quot;&gt;&amp;nbsp;+ VisitAdditiveExpr(Lab1Parser.AdditiveExprContext) : double&lt;br&gt;&amp;nbsp;+ VisitEqualityExpr(Lab1Parser.EqualityExprContext) : double&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="20" y="790" width="420" height="180" as="geometry" />
         </mxCell>
         <mxCell id="EiC5z9EAIgZ3hvvaGwU--7" value="1" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;exitX=-0.015;exitY=0.839;exitDx=0;exitDy=0;exitPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="EiC5z9EAIgZ3hvvaGwU--1" target="EiC5z9EAIgZ3hvvaGwU--2" edge="1">
           <mxGeometry x="0.408" y="140" relative="1" as="geometry">
@@ -59,7 +59,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="EiC5z9EAIgZ3hvvaGwU--16" value="1" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;entryX=0.915;entryY=1.009;entryDx=0;entryDy=0;entryPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="EiC5z9EAIgZ3hvvaGwU--3" target="EiC5z9EAIgZ3hvvaGwU--1" edge="1">
+        <mxCell id="EiC5z9EAIgZ3hvvaGwU--16" value="" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;entryX=0.915;entryY=1.009;entryDx=0;entryDy=0;entryPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="EiC5z9EAIgZ3hvvaGwU--3" target="EiC5z9EAIgZ3hvvaGwU--1" edge="1">
           <mxGeometry x="-0.3524" y="-54" relative="1" as="geometry">
             <mxPoint x="380" y="359" as="sourcePoint" />
             <mxPoint x="540" y="359" as="targetPoint" />
@@ -105,7 +105,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="EiC5z9EAIgZ3hvvaGwU--25" value="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="100" y="730" width="20" height="20" as="geometry" />
+          <mxGeometry x="260" y="770" width="20" height="20" as="geometry" />
         </mxCell>
         <mxCell id="EiC5z9EAIgZ3hvvaGwU--26" value="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="340" y="585" width="20" height="20" as="geometry" />
@@ -173,6 +173,9 @@
         </mxCell>
         <mxCell id="Y1Qi1rd_7yy1WZsH-nH0-22" value="0..n" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="510" y="409" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Y1Qi1rd_7yy1WZsH-nH0-23" value="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="360" y="180" width="20" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
