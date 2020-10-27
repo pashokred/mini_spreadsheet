@@ -6,10 +6,10 @@ namespace Lab1
     {
         public Cell(string position)
         {
-            this.position = position;
+            this.Position = position;
         }
 
-        public string position { get; set; }
+        public string Position { get; set; }
         public List<Cell> Dependencies = new List<Cell>();
         public List<Cell> TemporaryDependencies = new List<Cell>();
         public string Expression { get; set; }
@@ -21,12 +21,16 @@ namespace Lab1
 
         public bool Equals(Cell cell1, Cell cell2)
         {
-            return cell1.position == cell2.position;
+            if (cell2 != null && cell1 != null)
+            {
+                return cell1.Position == cell2.Position;
+            }
+            return false;
         }
 
         public int GetHashCode(Cell cell)
         {
-            return cell.position.GetHashCode();
+            return cell.Position.GetHashCode();
         }
 
         #endregion

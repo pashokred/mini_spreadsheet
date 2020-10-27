@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Lab1
 {
@@ -24,15 +25,34 @@ namespace Lab1
             string result = context.GetText();
             //видобути значення змінної з таблиці
 
-            Cell resCell = new Cell(result);
+            var resCell = new Cell(result);
 
             if (Form1.TableIdentifier.ContainsKey(resCell))
             {
+                resCell = Form1.TableIdentifier.FirstOrDefault(x =>
+                    x.Key.Position == result).Key;
+                resCell.Dependencies = Form1.TableIdentifier.FirstOrDefault(x =>
+                    x.Key.Position == result).Key.Dependencies;
+                resCell.Expression = Form1.TableIdentifier.FirstOrDefault(x =>
+                    x.Key.Position == result).Key.Expression;
+
+            }
+            else
+            {
+                resCell = new Cell(result);
+            }
+
+            if (Form1.TableIdentifier.ContainsKey(resCell))
+            {
+                Form1.CurrentCell.Dependencies.Add(resCell);
+
                 if (Form1.IsCyclic(resCell))
                 {
-                    string message = "ERROR: Cycle found in cell " + Form1.CurrentCell.position + " that refers to cell " + result;
+                    string message = "ERROR: Cycle found in cell " + Form1.CurrentCell.Position + " that refers to cell " + result;
                     throw new InvalidOperationException(message);
                 }
+
+                Form1.CurrentCell.Dependencies.Remove(resCell);
 
                 Form1.CurrentCell.TemporaryDependencies.Add(resCell);
                 return Form1.TableIdentifier[resCell];

@@ -7,7 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Data.OleDb;
+using System.Reflection;
 
 namespace Lab1
 {
@@ -44,7 +44,7 @@ namespace Lab1
                 AddAColumn(i);
             }
             //Table.RowHeadersDefaultCellStyle.Padding = new Padding(3);//helps to get rid of the selection triangle?
-            for (int i = 0; i < rows; i++)
+            for (var i = 0; i < rows; i++)
             {
                 AddARow(i);
             }
@@ -53,13 +53,13 @@ namespace Lab1
 
             //Column header style
 
-            Table.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Table.ColumnHeadersDefaultCellStyle.Font = new Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Table.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             Table.ColumnHeadersDefaultCellStyle.BackColor = Color.Gainsboro;
 
             //Row header style
 
-            Table.RowHeadersDefaultCellStyle.Font = new System.Drawing.Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Table.RowHeadersDefaultCellStyle.Font = new Font("Verdana", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Table.RowHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             Table.RowHeadersDefaultCellStyle.BackColor = Color.Gainsboro;
         }
@@ -128,13 +128,13 @@ namespace Lab1
                                                          (Table.CurrentCell.RowIndex + 1))))
                 {
                     CurrentCell = TableIdentifier.FirstOrDefault(x =>
-                        x.Key.position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
+                        x.Key.Position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
                         (Table.CurrentCell.RowIndex + 1).ToString()).Key;
                     CurrentCell.Dependencies = TableIdentifier.FirstOrDefault(x =>
-                        x.Key.position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
+                        x.Key.Position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
                         (Table.CurrentCell.RowIndex + 1).ToString()).Key.Dependencies;
                     CurrentCell.Expression = TableIdentifier.FirstOrDefault(x =>
-                        x.Key.position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
+                        x.Key.Position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
                         (Table.CurrentCell.RowIndex + 1).ToString()).Key.Expression;
 
                 }
@@ -168,11 +168,11 @@ namespace Lab1
 
                 if (CurrentCell.Dependencies.Count > 0)
                 {
-                    foreach (Cell dependency in CurrentCell.Dependencies)
+                    foreach (var dependency in CurrentCell.Dependencies)
                     {
                         var depResult = Calculator.Evaluate(dependency.Expression);
 
-                        (string column, int row) = Program.ParseIdentifier(dependency.position);
+                        (string column, int row) = Program.ParseIdentifier(dependency.Position);
                         Table.Rows[row-1].Cells[Table.Columns[column].Index].Value = depResult;
                         TableIdentifier[dependency] = depResult;
                     }
@@ -221,7 +221,7 @@ namespace Lab1
             if (Table.Rows.Count > 0)
             {
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "Excel (.xlsx)|  *.xlsx";
+                sfd.Filter = @"Excel (.xlsx)| *.xlsx";
                 sfd.FileName = "Output.xlsx";
                 bool fileError = false;
                 if (sfd.ShowDialog() == DialogResult.OK)
@@ -242,8 +242,8 @@ namespace Lab1
                     {
                         try
                         {
-                            Excel.Application XcelApp = new Excel.Application();
-                            Excel._Workbook workbook = XcelApp.Workbooks.Add(Type.Missing);
+                            Excel.Application xcelApp = new Excel.Application();
+                            Excel._Workbook workbook = xcelApp.Workbooks.Add(Type.Missing);
                             Excel._Worksheet worksheet = null;
 
                             //worksheet = (Excel._Worksheet) workbook.Sheets["Sheet1"];
@@ -266,11 +266,11 @@ namespace Lab1
 
                             worksheet.Columns.AutoFit();
                             workbook.SaveAs(sfd.FileName);
-                            XcelApp.Quit();
+                            xcelApp.Quit();
 
                             ReleaseObject(worksheet);
                             ReleaseObject(workbook);
-                            ReleaseObject(XcelApp);
+                            ReleaseObject(xcelApp);
 
                             MessageBox.Show("Data Exported Successfully !!!", "Info");
                         }
@@ -289,38 +289,73 @@ namespace Lab1
 
         private void ImportBtn_Click(object sender, EventArgs e)
         {
-            try
+            DataTable dt = new DataTable("dataTable");
+            DataSet dsSource = new DataSet("dataSet");
+            dt.Reset();
+
+            DialogResult dialogResult = MessageBox.Show("Sure", "Some Title", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
-                using (OpenFileDialog ofd = new OpenFileDialog()
-                    {Filter = "*.xls|*.xlsx|Excel WorkBook|Excel WorkBook 97-2003", ValidateNames = true})
+                Excel.Workbook workbook;
+                Excel.Worksheet NwSheet;
+                Excel.Range ShtRange;
+                Excel.Application ExcelObj = new Excel.Application();
+                OpenFileDialog filedlgExcel = new OpenFileDialog();
+                filedlgExcel.Title = "Select file";
+                filedlgExcel.InitialDirectory = @"c:\";
+                //filedlgExcel.FileName = textBox1.Text;
+                filedlgExcel.Filter = "Excel Sheet(*.xlsx)|*.xlsx|All Files(*.*)|*.*";
+                filedlgExcel.FilterIndex = 1;
+                filedlgExcel.RestoreDirectory = true;
+                if (filedlgExcel.ShowDialog() == DialogResult.OK)
                 {
-                    if (ofd.ShowDialog() == DialogResult.OK)
+
+                    workbook = ExcelObj.Workbooks.Open(filedlgExcel.FileName, Missing.Value, Missing.Value,
+                        Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value,
+                        Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
+                    NwSheet = (Excel.Worksheet) workbook.Sheets.get_Item(1);
+                    ShtRange = NwSheet.UsedRange;
+                    for (int Cnum = 1; Cnum <= ShtRange.Columns.Count; Cnum++)
                     {
-                        String name = "Sheet1";
-                        String constr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" +
-                                        ofd.FileName +
-                                        ";Extended Properties='Excel 12.0;HDR=YES;';";
-
-                        OleDbConnection con = new OleDbConnection(constr);
-                        OleDbCommand oconn = new OleDbCommand("Select * From [" + name + "$]", con);
-                        con.Open();
-
-                        OleDbDataAdapter sda = new OleDbDataAdapter(oconn);
-                        System.Data.DataTable data = new System.Data.DataTable();
-                        sda.Fill(data);
-                        Table.DataSource = data;
-                        InitializeDataGridView(Table.RowCount, Table.ColumnCount);
-                        Controls.Add(Table);
+                        if ((ShtRange.Cells[1, Cnum] as Excel.Range).Value2 != null)
+                        {
+                            dt.Columns.Add(new DataColumn((ShtRange.Cells[1, Cnum] as Excel.Range).Value2.ToString()));
+                        }
                     }
+
+                    dt.AcceptChanges();
+                    string[] columnNames = new String[dt.Columns.Count];
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        columnNames[0] = dt.Columns[i].ColumnName;
+                    }
+                    //string[] columnNames = (from dc in dt.Columns.Cast<DataColumn>() select dc.ColumnName).ToArray();
+
+
+                    for (int Rnum = 2; Rnum <= ShtRange.Rows.Count; Rnum++)
+                    {
+                        DataRow dr = dt.NewRow();
+                        for (int Cnum = 1; Cnum <= ShtRange.Columns.Count; Cnum++)
+                        {
+                            if ((ShtRange.Cells[Rnum, Cnum] as Excel.Range).Value2 != null)
+                            {
+                                dr[Cnum-1] = (ShtRange.Cells[Rnum, Cnum] as Excel.Range).Value2.ToString();
+                            }
+                        }
+
+                        dt.Rows.Add(dr);
+                        dt.AcceptChanges();
+                    }
+
+                    workbook.Close(true, Missing.Value, Missing.Value);
+                    ExcelObj.Quit();
+
+                    Table.DataSource = dt;
                 }
-            }
-            catch (Exception ex)
-            {
-                string errormsg = ex.ToString();
             }
         }
 
-    
+
 
         private void ReleaseObject(object obj)
         {

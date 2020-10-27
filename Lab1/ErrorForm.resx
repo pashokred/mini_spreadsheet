@@ -57,4 +57,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Form1_ExportBtn_Click_It_wasn_t_possible_to_write_the_data_to_the_disk_" xml:space="preserve">
+    <value>It wasn't possible to write the data to the disk.</value>
+  </data>
 </root>
