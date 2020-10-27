@@ -5,22 +5,15 @@
 
 This is pretty spreadsheet created in Windows Forms that can help you make basic operations with cells and values. 
 
-Screenshot of operation
+### Used:
+
+* ANTLR4 for parsing expressions
+* Windows Forms for GUI
+
+
+## Screenshot of operation
 
 ![Table Screenshot](https://github.com/pashokred/mini_spreadsheet/blob/master/img/TableScreenshot.png)
-
-Use-case diagram:
-
-![Use-case diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/UseCaseDiagram.png)
-
-Class diagram:
-
-![Class diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/ClassDiagram.png)
-
-Sequence diagram:
-
-![Sequence diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/SequenceDiagram.png)
-
 
 ## Developing
 
@@ -64,7 +57,7 @@ There is all the bells and whistles this project can perform:
 
 #### Argument 1 
 
-Returns result of Logical operation
+##### Returns result of Logical operation
 
 Type: `Double|String`<br>
 Return: `Double`  
@@ -87,7 +80,7 @@ Example:
 
 #### Argument 2 
 
-Returns result of Arithmetical operation
+##### Returns result of Arithmetical operation
 
 Type: `Double|String`<br>
 Return: `Double`  
@@ -125,4 +118,18 @@ branch. Pull requests are warmly welcome!
 
 "The code in this project is licensed under MIT license."
 
-Haha, sorry, not today
+Sorry, not today
+
+
+## Use-case diagram:
+
+![Use-case diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/UseCaseDiagram.png)
+
+## Class diagram:
+
+![Class diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/ClassDiagram.png)
+
+## Sequence diagram:
+
+![Sequence diagram](https://github.com/pashokred/mini_spreadsheet/blob/master/img/SequenceDiagram.png)
+
