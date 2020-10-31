@@ -60,4 +60,7 @@
   <data name="Form1_ExportBtn_Click_It_wasn_t_possible_to_write_the_data_to_the_disk_" xml:space="preserve">
     <value>It wasn't possible to write the data to the disk.</value>
   </data>
+  <data name="Form1_ImportBtn_Click_Select_file" xml:space="preserve">
+    <value>Select file</value>
+  </data>
 </root>

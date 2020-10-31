@@ -235,7 +235,7 @@ namespace Lab1
                         catch (IOException ex)
                         {
                             fileError = true;
-                            MessageBox.Show("It wasn't possible to write the data to the disk." + ex.Message);
+                            MessageBox.Show(Messages.ImpossibleToWriteData + ex.Message);
                         }
                     }
                     if (!fileError)
@@ -272,7 +272,7 @@ namespace Lab1
                             ReleaseObject(workbook);
                             ReleaseObject(xcelApp);
 
-                            MessageBox.Show("Data Exported Successfully !!!", "Info");
+                            MessageBox.Show(Messages.SuccesfulExport, "Info");
                         }
                         catch (Exception ex)
                         {
@@ -283,12 +283,15 @@ namespace Lab1
             }
             else
             {
-                MessageBox.Show("No Record To Export !!!", "Info");
+                MessageBox.Show(Messages.NoRecord, "Info");
             }
         }
 
         private void ImportBtn_Click(object sender, EventArgs e)
         {
+            
+            //TODO : Fix import
+            
             DataTable dt = new DataTable("dataTable");
             DataSet dsSource = new DataSet("dataSet");
             dt.Reset();
@@ -296,30 +299,29 @@ namespace Lab1
             DialogResult dialogResult = MessageBox.Show("Sure", "Some Title", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Excel.Workbook workbook;
-                Excel.Worksheet NwSheet;
-                Excel.Range ShtRange;
-                Excel.Application ExcelObj = new Excel.Application();
-                OpenFileDialog filedlgExcel = new OpenFileDialog();
-                filedlgExcel.Title = "Select file";
-                filedlgExcel.InitialDirectory = @"c:\";
+                var excelObj = new Excel.Application();
+                var filedialogExcel = new OpenFileDialog
+                {
+                    Title = "Select file",
+                    InitialDirectory = @"c:\",
+                    Filter = "Excel Sheet(*.xlsx)|*.xlsx|All Files(*.*)|*.*",
+                    FilterIndex = 1,
+                    RestoreDirectory = true
+                };
                 //filedlgExcel.FileName = textBox1.Text;
-                filedlgExcel.Filter = "Excel Sheet(*.xlsx)|*.xlsx|All Files(*.*)|*.*";
-                filedlgExcel.FilterIndex = 1;
-                filedlgExcel.RestoreDirectory = true;
-                if (filedlgExcel.ShowDialog() == DialogResult.OK)
+                if (filedialogExcel.ShowDialog() == DialogResult.OK)
                 {
 
-                    workbook = ExcelObj.Workbooks.Open(filedlgExcel.FileName, Missing.Value, Missing.Value,
+                    var workbook = excelObj.Workbooks.Open(filedialogExcel.FileName, Missing.Value, Missing.Value,
                         Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value,
                         Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
-                    NwSheet = (Excel.Worksheet) workbook.Sheets.get_Item(1);
-                    ShtRange = NwSheet.UsedRange;
-                    for (int Cnum = 1; Cnum <= ShtRange.Columns.Count; Cnum++)
+                    var nwSheet = (Excel.Worksheet) workbook.Sheets.get_Item(1);
+                    var shtRange = nwSheet.UsedRange;
+                    for (int cnum = 1; cnum <= shtRange.Columns.Count; cnum++)
                     {
-                        if ((ShtRange.Cells[1, Cnum] as Excel.Range).Value2 != null)
+                        if ((shtRange.Cells[1, cnum] as Excel.Range)?.Value2 != null)
                         {
-                            dt.Columns.Add(new DataColumn((ShtRange.Cells[1, Cnum] as Excel.Range).Value2.ToString()));
+                            dt.Columns.Add(new DataColumn((shtRange.Cells[1, cnum] as Excel.Range)?.Value2.ToString()));
                         }
                     }
 
@@ -332,14 +334,16 @@ namespace Lab1
                     //string[] columnNames = (from dc in dt.Columns.Cast<DataColumn>() select dc.ColumnName).ToArray();
 
 
-                    for (int Rnum = 2; Rnum <= ShtRange.Rows.Count; Rnum++)
+                    for (int rnum = 2; rnum <= shtRange.Rows.Count; rnum++)
                     {
                         DataRow dr = dt.NewRow();
-                        for (int Cnum = 1; Cnum <= ShtRange.Columns.Count; Cnum++)
+                        for (int cnum = 1; cnum <= shtRange.Columns.Count; cnum++)
                         {
-                            if ((ShtRange.Cells[Rnum, Cnum] as Excel.Range).Value2 != null)
+                            if ((shtRange.Cells[rnum, cnum] as Excel.Range)?.Value2 != null)
                             {
-                                dr[Cnum-1] = (ShtRange.Cells[Rnum, Cnum] as Excel.Range).Value2.ToString();
+                                
+                                // NotImplementedException 
+                                dr[cnum-1] = (shtRange.Cells[rnum, cnum] as Excel.Range)?.Value2.ToString();
                             }
                         }
 
@@ -348,7 +352,7 @@ namespace Lab1
                     }
 
                     workbook.Close(true, Missing.Value, Missing.Value);
-                    ExcelObj.Quit();
+                    excelObj.Quit();
 
                     Table.DataSource = dt;
                 }
@@ -362,12 +366,10 @@ namespace Lab1
             try
             {
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
-                obj = null;
             }
             catch (Exception ex)
             {
-                obj = null;
-                MessageBox.Show("Exception Occured while releasing object " + ex.Message, "Error");
+                MessageBox.Show(Messages.ReleasingObjectExc + ex.Message, "Error");
             }
             finally
             {

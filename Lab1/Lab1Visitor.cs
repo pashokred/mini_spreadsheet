@@ -41,7 +41,9 @@ namespace Lab1
             {
                 resCell = new Cell(result);
             }
-
+            
+            //TODO : fix cycling 
+            
             if (Form1.TableIdentifier.ContainsKey(resCell))
             {
                 Form1.CurrentCell.Dependencies.Add(resCell);
