@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Lab1
 {
-    internal static class Program
+    public static class Program
     {
         /// <summary>
         ///  The main entry point for the application.
@@ -25,6 +25,10 @@ namespace Lab1
 
         public static string ComputeColumnName(int number)
         {
+            if (number < 0)
+            {
+                return "";
+            }
             string columnName = "";
             if (number < 26)
             {
@@ -62,13 +66,7 @@ namespace Lab1
             {
                 row += t.ToString();
             }
-            /*for (int i = columnRow.Item1.Length; i < identifier.Length; ++i)
-            {
-                if (identifier[i] >= '0' && identifier[i] <= '9')
-                {
-                    row += identifier[i].ToString();
-                }
-            }*/
+
             columnRow.Item2 = int.Parse(row);
 
             return columnRow;
