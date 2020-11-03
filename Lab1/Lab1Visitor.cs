@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -27,58 +26,28 @@ namespace Lab1
 
             var resCell = new Cell(result);
 
-            if (Form1.TableIdentifier.ContainsKey(resCell))
-            {
-                resCell = Form1.TableIdentifier.FirstOrDefault(x =>
-                    x.Key.Position == result).Key;
-                resCell.Dependencies = Form1.TableIdentifier.FirstOrDefault(x =>
-                    x.Key.Position == result).Key.Dependencies;
-                resCell.Expression = Form1.TableIdentifier.FirstOrDefault(x =>
-                    x.Key.Position == result).Key.Expression;
-
-            }
-            else
-            {
-                resCell = new Cell(result);
-            }
-            
             //TODO : fix cycling 
             
             if (Form1.TableIdentifier.ContainsKey(resCell))
             {
-                Form1.CurrentCell.Dependencies.Add(resCell);
-
+                resCell = Form1.TableIdentifier.FirstOrDefault(x => x.Key.Position == result).Key;
+                resCell.Dependencies = Form1.TableIdentifier.FirstOrDefault(x => x.Key.Position == result).Key.Dependencies;
+                resCell.Expression = Form1.TableIdentifier.FirstOrDefault(x => x.Key.Position == result).Key.Expression;
+                
                 if (Form1.IsCyclic(resCell))
                 {
                     string message = "ERROR: Cycle found in cell " + Form1.CurrentCell.Position + " that refers to cell " + result;
                     throw new InvalidOperationException(message);
                 }
-
-                Form1.CurrentCell.Dependencies.Remove(resCell);
-
-                Form1.CurrentCell.TemporaryDependencies.Add(resCell);
+                if(!resCell.Dependencies.Contains(Form1.CurrentCell))
+                    resCell.Dependencies.Add(Form1.CurrentCell);
                 return Form1.TableIdentifier[resCell];
+                
             }
+            resCell = new Cell(result);
+            resCell.Dependencies.Add(Form1.CurrentCell);
+            Form1.TableIdentifier.Add(resCell, 0.0);
             return 0.0;
-
-            /*foreach (var (cell, value) in Form1.TableIdentifier)
-            {
-                if (cell.position == result)
-                {
-                    if (Form1.IsCyclic(cell))
-                    {
-                        string message = "ERROR: Cycle found in cell " + Form1.CurrentCellColumnIndex +
-                                         (Form1.CurrentCellRowIndex + 1).ToString() + "that refers to cell " + result;
-                        throw new InvalidOperationException(message);
-                    }
-
-                    Form1.Dependencies[Form1.CurrentCellColumnIndex + (Form1.CurrentCellRowIndex + 1).ToString()].Add();
-
-
-                    return value;
-                }
-            }
-            return 0.0;*/
         }
 
         

@@ -11,7 +11,6 @@ namespace Lab1
 
         public string Position { get; set; }
         public List<Cell> Dependencies = new List<Cell>();
-        public List<Cell> TemporaryDependencies = new List<Cell>();
         public string Expression { get; set; }
     }
     

@@ -25,11 +25,28 @@ namespace Lab1
 
 
         public static Cell CurrentCell;
+        public static int CurCol;
+        public static int CurRow;
+        public static string CurName;
 
         public static bool IsCyclic(Cell cell)
         {
-            return cell.Dependencies.Exists(x => x == CurrentCell);
+            if (CurrentCell.Dependencies.Exists(x => x == cell))
+                return true;
+            return IsDependent(CurrentCell, cell);
         }
+
+        public static bool IsDependent(Cell current, Cell founding)
+        {
+            if (current.Dependencies == null)
+            {
+                return false;
+            }
+            
+            return current.Dependencies.Any(dependency => dependency == founding) || 
+                   current.Dependencies.Any(dependency => IsDependent(dependency, founding));
+        }
+        
 
         private void InitializeDataGridView(int rows, int columns)
         {
@@ -120,100 +137,76 @@ namespace Lab1
 
         //public static Dictionary<string, string> expressions = new Dictionary<string, string>();
 
+
+        //TODO : Make shorter method and make tests
+
+        void UpdateDependencies(Cell cell)
+        {
+            if (cell.Dependencies.Count > 0)
+            {
+                foreach (var dependency in cell.Dependencies)
+                {
+                    CurrentCell = dependency;
+                    CurrentCell.Dependencies = dependency.Dependencies;
+                    CurrentCell.Expression = dependency.Expression;
+                    var depResult = Calculator.Evaluate(dependency.Expression);
+
+                    (string column, int row) = Program.ParseIdentifier(dependency.Position);
+                    // ReSharper disable once PossibleNullReferenceException
+                    if(Table.Columns.Contains(column)) Table.Rows[row-1].Cells[Table.Columns[column].Index].Value = depResult;
+                    TableIdentifier[dependency] = depResult;
+                    if (dependency.Dependencies.Count > 0)
+                    {
+                        UpdateDependencies(dependency);
+                    }
+                }
+            }
+        }
+        
+        
+        
         private void UpdateCellBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                if (TableIdentifier.ContainsKey(new Cell(Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
-                                                         (Table.CurrentCell.RowIndex + 1))))
+                CurCol = Table.CurrentCell.ColumnIndex;
+                CurRow = Table.CurrentCell.RowIndex;
+                CurName = Program.PrintColumnName(CurCol) + (CurRow + 1);
+                
+                if (TableIdentifier.ContainsKey(new Cell(CurName)))
                 {
-                    CurrentCell = TableIdentifier.FirstOrDefault(x =>
-                        x.Key.Position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
-                        (Table.CurrentCell.RowIndex + 1).ToString()).Key;
-                    CurrentCell.Dependencies = TableIdentifier.FirstOrDefault(x =>
-                        x.Key.Position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
-                        (Table.CurrentCell.RowIndex + 1).ToString()).Key.Dependencies;
-                    CurrentCell.Expression = TableIdentifier.FirstOrDefault(x =>
-                        x.Key.Position == Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
-                        (Table.CurrentCell.RowIndex + 1).ToString()).Key.Expression;
-
+                    CurrentCell = TableIdentifier.FirstOrDefault(x => x.Key.Position == CurName).Key;
+                    CurrentCell.Dependencies = TableIdentifier.FirstOrDefault(x => x.Key.Position == CurName).Key.Dependencies;
+                    CurrentCell.Expression = TableIdentifier.FirstOrDefault(x => x.Key.Position == CurName).Key.Expression;
                 }
                 else
                 {
-                    CurrentCell = new Cell(Program.PrintColumnName(Table.CurrentCell.ColumnIndex) +
-                                                         (Table.CurrentCell.RowIndex + 1));
+                    CurrentCell = new Cell(CurName);
                 }
-
                 
-                // Evaluate expression
                 var result = Calculator.Evaluate(CellEditText.Text);
 
-                // Update current cell
-                Table.Rows[Table.CurrentCell.RowIndex].Cells[Table.CurrentCell.ColumnIndex].Value = result;
+                // UPDATE current cell
+                Table.Rows[CurRow].Cells[CurCol].Value = result;
 
                 //Add current cell to table identifier
                 TableIdentifier[CurrentCell] = result;
 
-                //Add expression to variable in cell
-                if (string.IsNullOrEmpty(CurrentCell.Expression))
-                {
-                    CurrentCell.Expression = CellEditText.Text;
-                }
-
-                //expressions[new Cell()] = CellEditText.Text;
-                //TableIdentifier[CurrentCell] = result;
-
+                //Add EXPRESSION to variable in cell
+                CurrentCell.Expression = CellEditText.Text;
                 
                 // Update dependent cells
-
-                if (CurrentCell.Dependencies.Count > 0)
-                {
-                    foreach (var dependency in CurrentCell.Dependencies)
-                    {
-                        var depResult = Calculator.Evaluate(dependency.Expression);
-
-                        (string column, int row) = Program.ParseIdentifier(dependency.Position);
-                        Table.Rows[row-1].Cells[Table.Columns[column].Index].Value = depResult;
-                        TableIdentifier[dependency] = depResult;
-                    }
-                }
-
-
-                // Check if temporary dependency not null and update dependencies
-
-                if (CurrentCell.TemporaryDependencies.Count > 0)
-                {
-                    foreach (Cell dependency in CurrentCell.TemporaryDependencies)
-                    {
-                        (Cell temp, double value) = (dependency, TableIdentifier[dependency]);
-                        temp.Dependencies = dependency.Dependencies;
-                        temp.Expression = dependency.Expression;
-                        temp.Dependencies.Add(CurrentCell);
-                        TableIdentifier.Remove(dependency);
-                        TableIdentifier.Add(temp, value);
-                    }
-                }
-
+                
+                UpdateDependencies(CurrentCell);
+                
             }
             catch (Exception exception)
             {
+                // ReSharper disable once PossibleNullReferenceException
                 int line = new StackTrace(exception, true).GetFrame(0).GetFileLineNumber();
                 var errorForm = new ErrorForm(exception.Message + ". Thrown at line " + line);
                 errorForm.ShowDialog();
-                
             }
-
-            /*catch (ArgumentException argumentException)
-            {
-                var errorForm = new ErrorForm(argumentException.Message);
-                errorForm.ShowDialog();
-            }
-            catch (DivideByZeroException zeroDiv)
-            {
-                var errorForm = new ErrorForm(zeroDiv.Message);
-                errorForm.ShowDialog();
-            }*/
-            
         }
 
         private void ExportBtn_Click(object sender, EventArgs e)
@@ -244,10 +237,9 @@ namespace Lab1
                         {
                             Excel.Application xcelApp = new Excel.Application();
                             Excel._Workbook workbook = xcelApp.Workbooks.Add(Type.Missing);
-                            Excel._Worksheet worksheet = null;
 
                             //worksheet = (Excel._Worksheet) workbook.Sheets["Sheet1"];
-                            worksheet = (Excel._Worksheet) workbook.ActiveSheet;
+                            var worksheet = (Excel._Worksheet) workbook.ActiveSheet;
                             worksheet.Name = "Output";
                             worksheet.Application.ActiveWindow.SplitRow = 1;
                             worksheet.Application.ActiveWindow.FreezePanes = true;
@@ -272,18 +264,18 @@ namespace Lab1
                             ReleaseObject(workbook);
                             ReleaseObject(xcelApp);
 
-                            MessageBox.Show(Messages.SuccesfulExport, "Info");
+                            MessageBox.Show(Messages.SuccesfulExport, @"Info");
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Error :" + ex.Message);
+                            MessageBox.Show(@"Error :" + ex.Message);
                         }
                     }
                 }
             }
             else
             {
-                MessageBox.Show(Messages.NoRecord, "Info");
+                MessageBox.Show(Messages.NoRecord, @"Info");
             }
         }
 
@@ -293,18 +285,18 @@ namespace Lab1
             //TODO : Fix import
             
             DataTable dt = new DataTable("dataTable");
-            DataSet dsSource = new DataSet("dataSet");
+            //DataSet dsSource = new DataSet("dataSet");
             dt.Reset();
 
-            DialogResult dialogResult = MessageBox.Show("Sure", "Some Title", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show(@"Sure", @"Some Title", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
                 var excelObj = new Excel.Application();
                 var filedialogExcel = new OpenFileDialog
                 {
-                    Title = "Select file",
+                    Title = @"Select file",
                     InitialDirectory = @"c:\",
-                    Filter = "Excel Sheet(*.xlsx)|*.xlsx|All Files(*.*)|*.*",
+                    Filter = @"Excel Sheet(*.xlsx)|*.xlsx|All Files(*.*)|*.*",
                     FilterIndex = 1,
                     RestoreDirectory = true
                 };
@@ -369,7 +361,7 @@ namespace Lab1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(Messages.ReleasingObjectExc + ex.Message, "Error");
+                MessageBox.Show(Messages.ReleasingObjectExc + ex.Message, @"Error");
             }
             finally
             {
@@ -382,6 +374,15 @@ namespace Lab1
         {
             var infoForm = new InfoForm();
             infoForm.ShowDialog();
+        }
+
+        private void Table_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var curCell = new Cell(Program.PrintColumnName(Table.CurrentCell.ColumnIndex) + (Table.CurrentCell.RowIndex + 1));
+            if(TableIdentifier.ContainsKey(curCell))
+                CellEditText.Text = TableIdentifier.FirstOrDefault(x => x.Key.Position == curCell.Position).Key.Expression;
+            else
+                CellEditText.Text = "";
         }
     }
 }

@@ -23,8 +23,8 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -44,25 +44,25 @@
             this.InfoBtn = new System.Windows.Forms.Button();
             this.ExportBtn = new System.Windows.Forms.Button();
             this.ImportBtn = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.Table)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.Table)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(21, 18);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.label1.Location = new System.Drawing.Point(24, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(188, 21);
+            this.label1.Size = new System.Drawing.Size(237, 28);
             this.label1.TabIndex = 1;
             this.label1.Text = "Enter integer size of table:";
             // 
             // AddRow
             // 
             this.AddRow.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.AddRow.Location = new System.Drawing.Point(1169, 57);
+            this.AddRow.Location = new System.Drawing.Point(1336, 61);
             this.AddRow.Name = "AddRow";
-            this.AddRow.Size = new System.Drawing.Size(94, 32);
+            this.AddRow.Size = new System.Drawing.Size(107, 34);
             this.AddRow.TabIndex = 2;
             this.AddRow.Text = "Add Row";
             this.AddRow.UseVisualStyleBackColor = false;
@@ -71,9 +71,9 @@
             // AddColumn
             // 
             this.AddColumn.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.AddColumn.Location = new System.Drawing.Point(1280, 56);
+            this.AddColumn.Location = new System.Drawing.Point(1463, 60);
             this.AddColumn.Name = "AddColumn";
-            this.AddColumn.Size = new System.Drawing.Size(94, 32);
+            this.AddColumn.Size = new System.Drawing.Size(107, 34);
             this.AddColumn.TabIndex = 2;
             this.AddColumn.Text = "Add Column";
             this.AddColumn.UseVisualStyleBackColor = false;
@@ -81,58 +81,58 @@
             // 
             // CellEditText
             // 
-            this.CellEditText.Location = new System.Drawing.Point(390, 58);
+            this.CellEditText.Location = new System.Drawing.Point(446, 62);
             this.CellEditText.Name = "CellEditText";
-            this.CellEditText.PlaceholderText = "This text will be in the selected cell after clicking Update";
-            this.CellEditText.Size = new System.Drawing.Size(309, 23);
+            this.CellEditText.Size = new System.Drawing.Size(353, 22);
             this.CellEditText.TabIndex = 5;
             // 
             // Table
             // 
             this.Table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Table.Location = new System.Drawing.Point(21, 99);
+            this.Table.Location = new System.Drawing.Point(24, 106);
             this.Table.Name = "Table";
-            this.Table.Size = new System.Drawing.Size(1353, 527);
+            this.Table.Size = new System.Drawing.Size(1546, 562);
             this.Table.TabIndex = 3;
             this.Table.Text = "dataGridView2";
+            this.Table.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Table_CellClick);
             // 
             // TableRows
             // 
-            this.TableRows.Location = new System.Drawing.Point(21, 66);
+            this.TableRows.Location = new System.Drawing.Point(24, 70);
             this.TableRows.Name = "TableRows";
-            this.TableRows.Size = new System.Drawing.Size(66, 23);
+            this.TableRows.Size = new System.Drawing.Size(75, 22);
             this.TableRows.TabIndex = 6;
             // 
             // TableColumns
             // 
-            this.TableColumns.Location = new System.Drawing.Point(106, 65);
+            this.TableColumns.Location = new System.Drawing.Point(121, 69);
             this.TableColumns.Name = "TableColumns";
-            this.TableColumns.Size = new System.Drawing.Size(66, 23);
+            this.TableColumns.Size = new System.Drawing.Size(75, 22);
             this.TableColumns.TabIndex = 6;
             // 
             // LabelRows
             // 
             this.LabelRows.AutoSize = true;
-            this.LabelRows.Location = new System.Drawing.Point(21, 47);
+            this.LabelRows.Location = new System.Drawing.Point(24, 50);
             this.LabelRows.Name = "LabelRows";
-            this.LabelRows.Size = new System.Drawing.Size(35, 15);
+            this.LabelRows.Size = new System.Drawing.Size(42, 17);
             this.LabelRows.TabIndex = 1;
             this.LabelRows.Text = "Rows";
             // 
             // LabelColumns
             // 
             this.LabelColumns.AutoSize = true;
-            this.LabelColumns.Location = new System.Drawing.Point(106, 47);
+            this.LabelColumns.Location = new System.Drawing.Point(121, 50);
             this.LabelColumns.Name = "LabelColumns";
-            this.LabelColumns.Size = new System.Drawing.Size(55, 15);
+            this.LabelColumns.Size = new System.Drawing.Size(62, 17);
             this.LabelColumns.TabIndex = 1;
             this.LabelColumns.Text = "Columns";
             // 
             // CreateTableBtn
             // 
-            this.CreateTableBtn.Location = new System.Drawing.Point(199, 50);
+            this.CreateTableBtn.Location = new System.Drawing.Point(227, 53);
             this.CreateTableBtn.Name = "CreateTableBtn";
-            this.CreateTableBtn.Size = new System.Drawing.Size(118, 39);
+            this.CreateTableBtn.Size = new System.Drawing.Size(135, 42);
             this.CreateTableBtn.TabIndex = 7;
             this.CreateTableBtn.Text = "Create table";
             this.CreateTableBtn.UseVisualStyleBackColor = true;
@@ -140,9 +140,9 @@
             // 
             // UpdateCellBtn
             // 
-            this.UpdateCellBtn.Location = new System.Drawing.Point(714, 49);
+            this.UpdateCellBtn.Location = new System.Drawing.Point(816, 52);
             this.UpdateCellBtn.Name = "UpdateCellBtn";
-            this.UpdateCellBtn.Size = new System.Drawing.Size(131, 39);
+            this.UpdateCellBtn.Size = new System.Drawing.Size(150, 42);
             this.UpdateCellBtn.TabIndex = 8;
             this.UpdateCellBtn.Text = "Update";
             this.UpdateCellBtn.UseVisualStyleBackColor = true;
@@ -151,9 +151,9 @@
             // DelRowBtn
             // 
             this.DelRowBtn.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.DelRowBtn.Location = new System.Drawing.Point(1169, 12);
+            this.DelRowBtn.Location = new System.Drawing.Point(1336, 13);
             this.DelRowBtn.Name = "DelRowBtn";
-            this.DelRowBtn.Size = new System.Drawing.Size(94, 32);
+            this.DelRowBtn.Size = new System.Drawing.Size(107, 34);
             this.DelRowBtn.TabIndex = 2;
             this.DelRowBtn.Text = "Delete Row";
             this.DelRowBtn.UseVisualStyleBackColor = false;
@@ -162,9 +162,10 @@
             // DelColBtn
             // 
             this.DelColBtn.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.DelColBtn.Location = new System.Drawing.Point(1280, 12);
+            this.DelColBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.DelColBtn.Location = new System.Drawing.Point(1463, 13);
             this.DelColBtn.Name = "DelColBtn";
-            this.DelColBtn.Size = new System.Drawing.Size(94, 32);
+            this.DelColBtn.Size = new System.Drawing.Size(107, 34);
             this.DelColBtn.TabIndex = 2;
             this.DelColBtn.Text = "Delete Column";
             this.DelColBtn.UseVisualStyleBackColor = false;
@@ -174,9 +175,9 @@
             // 
             this.InfoBtn.BackColor = System.Drawing.SystemColors.Info;
             this.InfoBtn.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.InfoBtn.Location = new System.Drawing.Point(1015, 12);
+            this.InfoBtn.Location = new System.Drawing.Point(1160, 13);
             this.InfoBtn.Name = "InfoBtn";
-            this.InfoBtn.Size = new System.Drawing.Size(127, 33);
+            this.InfoBtn.Size = new System.Drawing.Size(145, 35);
             this.InfoBtn.TabIndex = 9;
             this.InfoBtn.Text = "Information";
             this.InfoBtn.UseVisualStyleBackColor = false;
@@ -186,9 +187,9 @@
             // 
             this.ExportBtn.BackColor = System.Drawing.SystemColors.Control;
             this.ExportBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ExportBtn.Location = new System.Drawing.Point(873, 57);
+            this.ExportBtn.Location = new System.Drawing.Point(998, 61);
             this.ExportBtn.Name = "ExportBtn";
-            this.ExportBtn.Size = new System.Drawing.Size(74, 31);
+            this.ExportBtn.Size = new System.Drawing.Size(85, 33);
             this.ExportBtn.TabIndex = 10;
             this.ExportBtn.Text = "Export";
             this.ExportBtn.UseVisualStyleBackColor = false;
@@ -198,9 +199,9 @@
             // 
             this.ImportBtn.BackColor = System.Drawing.SystemColors.Control;
             this.ImportBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ImportBtn.Location = new System.Drawing.Point(873, 15);
+            this.ImportBtn.Location = new System.Drawing.Point(998, 16);
             this.ImportBtn.Name = "ImportBtn";
-            this.ImportBtn.Size = new System.Drawing.Size(74, 31);
+            this.ImportBtn.Size = new System.Drawing.Size(85, 33);
             this.ImportBtn.TabIndex = 10;
             this.ImportBtn.Text = "Import";
             this.ImportBtn.UseVisualStyleBackColor = false;
@@ -208,9 +209,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1412, 638);
+            this.ClientSize = new System.Drawing.Size(1614, 681);
             this.Controls.Add(this.ImportBtn);
             this.Controls.Add(this.ExportBtn);
             this.Controls.Add(this.InfoBtn);
@@ -230,10 +231,9 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.Table)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.Table)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Lab1
@@ -49,23 +50,25 @@ namespace Lab1
 
         public static (string, int) ParseIdentifier(string identifier)
         {
-            (string, int) columnRow = ("", 0);
-            string row = "";
+            var columnRow = ("", 0);
+            var row = "";
 
-            for (int i = 0; i < identifier.Length; ++i)
+            foreach (var t in identifier.Where(t => t >= 'A' && t <= 'Z'))
             {
-                if (identifier[i] >= 'A' && identifier[i] <= 'Z')
-                {
-                    columnRow.Item1 += identifier[i].ToString();
-                }
+                columnRow.Item1 += t.ToString();
             }
-            for (int i = columnRow.Item1.Length; i < identifier.Length; ++i)
+
+            foreach (var t in identifier.Where(t => t >= '0' && t <= '9'))
+            {
+                row += t.ToString();
+            }
+            /*for (int i = columnRow.Item1.Length; i < identifier.Length; ++i)
             {
                 if (identifier[i] >= '0' && identifier[i] <= '9')
                 {
                     row += identifier[i].ToString();
                 }
-            }
+            }*/
             columnRow.Item2 = int.Parse(row);
 
             return columnRow;
