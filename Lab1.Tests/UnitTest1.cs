@@ -98,4 +98,39 @@ namespace Lab1.Tests
             Assert.AreEqual(col5, "EWW");
         }
     }
+
+    
+    /*public class CalculatorTests
+    {
+        [Test]
+        public void Evaluate_EvaluateValueFromCell_True()
+        {
+            // Arrange
+
+            string expr1 = "(15-40/5)*10";
+            string expr2 = "(15-40/5)*10 > 0";
+            string expr3 = "(15-40/5)*10 = 15";
+            string expr4 = "(15-40/5)*10 <> 14";
+            string expr5 = "(15-40/5)*10 + 10";
+
+            // Act
+
+            double val1 = Calculator.Evaluate(expr1);
+            double val2 = Calculator.Evaluate(expr2);
+            double val3 = Calculator.Evaluate(expr3);
+            double val4 = Calculator.Evaluate(expr4);
+            double val5 = Calculator.Evaluate(expr5);
+
+            // Assert
+            
+            Assert.AreEqual(val1, 70.0);
+            Assert.AreEqual(val2, 1.0);
+            Assert.AreEqual(val3, 0.0);
+            Assert.AreEqual(val4, 1.0);
+            Assert.AreEqual(val5, 80.0);
+
+        }
+            
+    }*/
+    
 }

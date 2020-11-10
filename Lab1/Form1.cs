@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Linq;
+using System.Text;
+using System.Data.OleDb;
+using System.Text;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 
@@ -279,78 +283,16 @@ namespace Lab1
             }
         }
 
+        private void ImportDestTB_TextChanged(object sender, EventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+        
         private void ImportBtn_Click(object sender, EventArgs e)
         {
-            
             //TODO : Fix import
-            
-            DataTable dt = new DataTable("dataTable");
-            //DataSet dsSource = new DataSet("dataSet");
-            dt.Reset();
 
-            DialogResult dialogResult = MessageBox.Show(@"Sure", @"Some Title", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
-                var excelObj = new Excel.Application();
-                var filedialogExcel = new OpenFileDialog
-                {
-                    Title = @"Select file",
-                    InitialDirectory = @"c:\",
-                    Filter = @"Excel Sheet(*.xlsx)|*.xlsx|All Files(*.*)|*.*",
-                    FilterIndex = 1,
-                    RestoreDirectory = true
-                };
-                //filedlgExcel.FileName = textBox1.Text;
-                if (filedialogExcel.ShowDialog() == DialogResult.OK)
-                {
-
-                    var workbook = excelObj.Workbooks.Open(filedialogExcel.FileName, Missing.Value, Missing.Value,
-                        Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value,
-                        Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
-                    var nwSheet = (Excel.Worksheet) workbook.Sheets.get_Item(1);
-                    var shtRange = nwSheet.UsedRange;
-                    for (int cnum = 1; cnum <= shtRange.Columns.Count; cnum++)
-                    {
-                        if ((shtRange.Cells[1, cnum] as Excel.Range)?.Value2 != null)
-                        {
-                            dt.Columns.Add(new DataColumn((shtRange.Cells[1, cnum] as Excel.Range)?.Value2.ToString()));
-                        }
-                    }
-
-                    dt.AcceptChanges();
-                    string[] columnNames = new String[dt.Columns.Count];
-                    for (int i = 0; i < dt.Columns.Count; i++)
-                    {
-                        columnNames[0] = dt.Columns[i].ColumnName;
-                    }
-                    //string[] columnNames = (from dc in dt.Columns.Cast<DataColumn>() select dc.ColumnName).ToArray();
-
-
-                    for (int rnum = 2; rnum <= shtRange.Rows.Count; rnum++)
-                    {
-                        DataRow dr = dt.NewRow();
-                        for (int cnum = 1; cnum <= shtRange.Columns.Count; cnum++)
-                        {
-                            if ((shtRange.Cells[rnum, cnum] as Excel.Range)?.Value2 != null)
-                            {
-                                
-                                // NotImplementedException 
-                                dr[cnum-1] = (shtRange.Cells[rnum, cnum] as Excel.Range)?.Value2.ToString();
-                            }
-                        }
-
-                        dt.Rows.Add(dr);
-                        dt.AcceptChanges();
-                    }
-
-                    workbook.Close(true, Missing.Value, Missing.Value);
-                    excelObj.Quit();
-
-                    Table.DataSource = dt;
-                }
-            }
         }
-
 
 
         private void ReleaseObject(object obj)

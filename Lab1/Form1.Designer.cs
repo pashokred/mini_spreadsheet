@@ -44,6 +44,7 @@
             this.InfoBtn = new System.Windows.Forms.Button();
             this.ExportBtn = new System.Windows.Forms.Button();
             this.ImportBtn = new System.Windows.Forms.Button();
+            this.ImportDestTB = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize) (this.Table)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,6 +89,7 @@
             // 
             // Table
             // 
+            this.Table.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.Table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Table.Location = new System.Drawing.Point(24, 106);
             this.Table.Name = "Table";
@@ -175,9 +177,9 @@
             // 
             this.InfoBtn.BackColor = System.Drawing.SystemColors.Info;
             this.InfoBtn.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.InfoBtn.Location = new System.Drawing.Point(1160, 13);
+            this.InfoBtn.Location = new System.Drawing.Point(1116, 13);
             this.InfoBtn.Name = "InfoBtn";
-            this.InfoBtn.Size = new System.Drawing.Size(145, 35);
+            this.InfoBtn.Size = new System.Drawing.Size(189, 35);
             this.InfoBtn.TabIndex = 9;
             this.InfoBtn.Text = "Information";
             this.InfoBtn.UseVisualStyleBackColor = false;
@@ -187,7 +189,7 @@
             // 
             this.ExportBtn.BackColor = System.Drawing.SystemColors.Control;
             this.ExportBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ExportBtn.Location = new System.Drawing.Point(998, 61);
+            this.ExportBtn.Location = new System.Drawing.Point(999, 12);
             this.ExportBtn.Name = "ExportBtn";
             this.ExportBtn.Size = new System.Drawing.Size(85, 33);
             this.ExportBtn.TabIndex = 10;
@@ -199,7 +201,7 @@
             // 
             this.ImportBtn.BackColor = System.Drawing.SystemColors.Control;
             this.ImportBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ImportBtn.Location = new System.Drawing.Point(998, 16);
+            this.ImportBtn.Location = new System.Drawing.Point(999, 58);
             this.ImportBtn.Name = "ImportBtn";
             this.ImportBtn.Size = new System.Drawing.Size(85, 33);
             this.ImportBtn.TabIndex = 10;
@@ -207,11 +209,20 @@
             this.ImportBtn.UseVisualStyleBackColor = false;
             this.ImportBtn.Click += new System.EventHandler(this.ImportBtn_Click);
             // 
+            // ImportDestTB
+            // 
+            this.ImportDestTB.Location = new System.Drawing.Point(1116, 66);
+            this.ImportDestTB.Name = "ImportDestTB";
+            this.ImportDestTB.Size = new System.Drawing.Size(188, 22);
+            this.ImportDestTB.TabIndex = 11;
+            this.ImportDestTB.TextChanged += new System.EventHandler(this.ImportDestTB_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1614, 681);
+            this.Controls.Add(this.ImportDestTB);
             this.Controls.Add(this.ImportBtn);
             this.Controls.Add(this.ExportBtn);
             this.Controls.Add(this.InfoBtn);
@@ -229,12 +240,14 @@
             this.Controls.Add(this.LabelRows);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Pavlo Redko";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize) (this.Table)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.TextBox ImportDestTB;
 
         #endregion
         private System.Windows.Forms.Label label1;
