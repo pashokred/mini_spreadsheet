@@ -117,7 +117,7 @@ branch. Pull requests are warmly welcome!
 ## Licensing
 
 The code in this project is licensed under MIT license.
-[LICENSE](../blob/master/LICENSE)
+[LICENSE](../master/LICENSE)
 
 ## Use-case diagram:
 
